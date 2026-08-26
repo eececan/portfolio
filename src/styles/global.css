@@ -1,0 +1,197 @@
+@import "tailwindcss";
+@import "@fontsource-variable/source-serif-4";
+@import "@fontsource-variable/inter";
+
+/* ---------------------------------------------------------------------------
+   Design tokens. Change these values and the whole site follows.
+   --------------------------------------------------------------------------- */
+:root {
+	--c-page: #fdfdfb;
+	--c-surface: #f4f4ef;
+	--c-ink: #1c1c1a;
+	--c-muted: #63635d;
+	--c-faint: #9a9a92;
+	--c-rule: #e3e3dc;
+	--c-accent: #2f4858;
+	--c-accent-ink: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--c-page: #16171a;
+		--c-surface: #1e2025;
+		--c-ink: #e9e9e4;
+		--c-muted: #a1a19a;
+		--c-faint: #6d6d67;
+		--c-rule: #2c2e34;
+		--c-accent: #93b4c6;
+		--c-accent-ink: #16171a;
+	}
+}
+
+@theme inline {
+	--font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+	--font-serif: 'Source Serif 4 Variable', ui-serif, Georgia, serif;
+
+	--color-page: var(--c-page);
+	--color-surface: var(--c-surface);
+	--color-ink: var(--c-ink);
+	--color-muted: var(--c-muted);
+	--color-faint: var(--c-faint);
+	--color-rule: var(--c-rule);
+	--color-accent: var(--c-accent);
+	--color-accent-ink: var(--c-accent-ink);
+}
+
+html {
+	background-color: var(--c-page);
+	color: var(--c-ink);
+	-webkit-text-size-adjust: 100%;
+}
+
+::selection {
+	background-color: var(--c-accent);
+	color: var(--c-accent-ink);
+}
+
+:focus-visible {
+	outline: 2px solid var(--c-accent);
+	outline-offset: 3px;
+	border-radius: 2px;
+}
+
+h1, h2, h3, h4 {
+	text-wrap: balance;
+}
+
+/* ---------------------------------------------------------------------------
+   .prose — long-form article styling for Markdown / MDX bodies.
+   --------------------------------------------------------------------------- */
+.prose {
+	font-family: var(--font-serif);
+	font-size: 1.0625rem;
+	line-height: 1.72;
+	color: var(--c-ink);
+}
+
+.prose > * + * { margin-top: 1.25em; }
+
+/* Wide media, narrow text: prose fills the column, but running text stays
+   at a readable measure so figures and code can use the full width. */
+.prose > p,
+.prose > ul,
+.prose > ol,
+.prose > h2,
+.prose > h3,
+.prose > blockquote,
+.prose > hr {
+	max-width: 68ch;
+}
+
+
+.prose h2 {
+	scroll-margin-top: 2rem;
+	font-family: var(--font-sans);
+	font-size: 1.0625rem;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	margin-top: 2.75em;
+	margin-bottom: 0.9em;
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid var(--c-rule);
+}
+
+.prose h3 {
+	font-family: var(--font-sans);
+	font-size: 0.9375rem;
+	font-weight: 600;
+	margin-top: 2em;
+	margin-bottom: 0.6em;
+}
+
+.prose a {
+	color: var(--c-ink);
+	text-decoration: underline;
+	text-decoration-color: var(--c-accent);
+	text-underline-offset: 3px;
+	text-decoration-thickness: 1px;
+}
+.prose a:hover { color: var(--c-accent); }
+
+.prose strong { font-weight: 600; }
+
+.prose ul, .prose ol { padding-left: 1.4em; }
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose li::marker { color: var(--c-faint); }
+.prose li + li { margin-top: 0.4em; }
+
+.prose blockquote {
+	border-left: 2px solid var(--c-rule);
+	padding-left: 1.2em;
+	color: var(--c-muted);
+	font-style: italic;
+}
+
+.prose hr {
+	border: 0;
+	border-top: 1px solid var(--c-rule);
+	margin: 3em 0;
+}
+
+/* Inline code */
+.prose :not(pre) > code {
+	font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+	font-size: 0.86em;
+	background: var(--c-surface);
+	border: 1px solid var(--c-rule);
+	border-radius: 3px;
+	padding: 0.12em 0.35em;
+}
+
+/* Code blocks (Shiki) */
+.prose pre {
+	font-size: 0.85rem;
+	line-height: 1.6;
+	padding: 1.1rem 1.25rem;
+	border: 1px solid var(--c-rule);
+	border-radius: 6px;
+	overflow-x: auto;
+}
+.prose pre code { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; }
+
+/* Shiki dual-theme switching */
+@media (prefers-color-scheme: dark) {
+	.prose .astro-code,
+	.prose .astro-code span {
+		color: var(--shiki-dark) !important;
+		background-color: var(--shiki-dark-bg) !important;
+	}
+}
+
+.prose img { border-radius: 4px; }
+
+.prose figure { margin-top: 2em; margin-bottom: 2em; }
+.prose figcaption {
+	font-family: var(--font-sans);
+	font-size: 0.8125rem;
+	line-height: 1.55;
+	color: var(--c-muted);
+	margin-top: 0.7em;
+}
+
+.prose table {
+	width: 100%;
+	font-family: var(--font-sans);
+	font-size: 0.875rem;
+	border-collapse: collapse;
+}
+.prose th, .prose td {
+	text-align: left;
+	padding: 0.55em 0.8em;
+	border-bottom: 1px solid var(--c-rule);
+}
+.prose th { font-weight: 600; }
+
+/* Wide content must scroll inside itself, never the page */
+.prose .table-wrap { overflow-x: auto; }

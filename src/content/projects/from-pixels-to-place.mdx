@@ -1,0 +1,188 @@
+---
+title: 'From Pixels to Place'
+tagline: 'Mapping architectural similarity across time and culture.'
+summary: >-
+  CLIP embeddings, UMAP, and HDBSCAN applied to 1,472 buildings across 25
+  architectural styles, asking whether visual similarity recovers the groupings
+  architectural history already recognises — and where it disagrees.
+year: '2025'
+status: 'complete'
+order: 1
+tags: ['CLIP', 'UMAP', 'HDBSCAN', 'Representation learning', 'Architectural history']
+cover: '../../assets/projects/from-pixels-to-place/umap-latent-space.png'
+coverAlt: 'UMAP projection of CLIP embeddings for 1,472 building images, coloured by architectural style.'
+repo: 'https://github.com/eececan/from-pixels-to-place'
+draft: false
+---
+
+import Figure from '../../components/Figure.astro';
+import umap from '../../assets/projects/from-pixels-to-place/umap-latent-space.png';
+import tree from '../../assets/projects/from-pixels-to-place/phylogenetic-tree.png';
+import matrix from '../../assets/projects/from-pixels-to-place/similarity-matrix.png';
+import subclusters from '../../assets/projects/from-pixels-to-place/subclusters-scatter.png';
+import egyptian from '../../assets/projects/from-pixels-to-place/subclusters-egyptian.png';
+import spotcheck from '../../assets/projects/from-pixels-to-place/dataset-spotcheck.jpg';
+
+## The question
+
+Do architectural styles remain bound to their culture, geography, and era, or do
+buildings from distant places and times share a deeper visual DNA?
+
+Architectural history answers this qualitatively, through the trained eye. This
+project asks whether the question survives being posed quantitatively — whether
+a model never taught architectural periodisation nevertheless organises
+buildings in ways a historian would recognise, and what it does when it
+disagrees.
+
+## Data
+
+The ECCV2014 architectural styles dataset (Xu et al., ECCV 2014), covering 25
+labelled styles from Ancient Egyptian to Deconstructivism. Styles were
+stratified to a target of 60 images each — the categories hold 77–80 images, so
+60 balances them without discarding much — giving **1,472 images** after
+unreadable files were dropped. Balancing matters here: UMAP's neighbourhood
+structure is sensitive to density, and an unbalanced corpus would let the
+largest style dominate the map.
+
+<Figure
+	src={spotcheck}
+	alt="Contact sheet of sample images drawn from each of the 25 architectural styles in the dataset."
+	caption="Stratified sample, five images per style. The spot-check exists to catch mislabelled and unreadable files before embedding — worth doing, since it also reveals how consistent the photographic conventions are within each category."
+	tall
+	plate={false}
+/>
+
+## Method
+
+1. **Embedding.** Each image is encoded with CLIP ViT-L/14 pretrained on
+   LAION-2B, producing L2-normalised 768-dimensional vectors. CLIP is trained on
+   general image–text pairs, not on an architectural taxonomy, so any structure
+   it recovers is not structure it was taught.
+2. **Projection.** UMAP to two dimensions, cosine metric, `n_neighbors=15`,
+   `min_dist=0.1`, fixed seed.
+3. **Clustering.** HDBSCAN with `min_cluster_size=8`, `min_samples=3`,
+   excess-of-mass selection. Density-based clustering means the number of groups
+   is discovered rather than specified — important, since fixing it at 25 would
+   smuggle the answer into the question.
+4. **Comparison.** Cosine similarity between per-style centroids, then Ward
+   linkage over that matrix to produce a hierarchy.
+
+A second pass re-ran HDBSCAN *inside* each style's own subspace (PCA to 10
+components, `min_cluster_size=6`) to ask whether individual styles are
+internally uniform.
+
+## What the map looks like
+
+<Figure
+	src={umap}
+	alt="UMAP scatter plot of 1,472 building images coloured by architectural style, showing separated regions for ancient, medieval sacred, domestic vernacular, and modern styles."
+	caption="UMAP projection of CLIP embeddings, coloured by labelled style. Egyptian and Achaemenid sit isolated on the right; Russian Orthodox forms a tight island at the top; the American domestic styles collapse into a single mass at the bottom centre."
+/>
+
+HDBSCAN found **44 clusters** and left 183 points (12.4%) as noise. Three things
+stand out.
+
+**Ancient sacred architecture separates cleanly.** Egyptian and Achaemenid
+occupy their own region of the map and produce nearly monocultural clusters —
+one Egyptian cluster of 34 points is 31 Egyptian, another 14 of 14. These are
+the styles with the most distinctive massing and the least overlap with anything
+else in the corpus.
+
+**Domestic vernacular collapses.** The single largest cluster holds 316 points
+and merges American Foursquare (60), American Craftsman (59), Queen Anne (51),
+Tudor Revival (42), Greek Revival (32), Colonial (27) and Georgian (17). The
+model is not distinguishing these styles at all. The centroid similarities agree:
+American Craftsman and American Foursquare sit at **0.98** cosine similarity,
+Queen Anne with either at 0.94–0.95.
+
+This is the most interesting result and also the most uncomfortable one. It is
+not obviously a failure of the model. A detached two-storey house photographed
+from the street is a strong visual regularity, and it may simply dominate the
+stylistic differences that an architectural historian would foreground. Whether
+CLIP is missing style or revealing that typology outweighs style is not something
+this pipeline can settle on its own.
+
+**Historical lineage shows up where you would expect it.** Byzantine and Russian
+Orthodox reach 0.88 similarity, and Byzantine sits equally close to Romanesque —
+consistent with the transmission history. Gothic splits across three clusters
+with Romanesque leaking into each.
+
+<Figure
+	src={matrix}
+	alt="Heatmap of cosine similarity between the CLIP centroids of all 25 architectural styles."
+	caption="Cosine similarity between per-style CLIP centroids. The bright block in the American and British domestic styles is the collapse described above; Egyptian's nearest neighbour is Achaemenid at 0.83, its furthest are Chicago School and American Foursquare at 0.50."
+/>
+
+## An unsupervised periodisation
+
+Hierarchical clustering over the centroid matrix recovers a structure nobody
+supplied:
+
+<Figure
+	src={tree}
+	alt="Dendrogram of the 25 architectural styles, splitting first into sacred versus secular, then into domestic and modern branches."
+	caption="Ward linkage over centroid cosine distances. The first split separates ancient and medieval sacred architecture from everything else; the second separates domestic and revival styles from the modern movement."
+/>
+
+The top-level division is sacred versus secular. Below it, Achaemenid and
+Egyptian pair off as the ancient branch; Gothic, Russian Orthodox, Byzantine,
+Baroque and Romanesque form the medieval and early-modern sacred branch; the
+domestic and revival styles group together; and Bauhaus, International,
+Postmodern, Deconstructivism, Art Deco, Art Nouveau, Beaux-Arts and Chicago
+School form a modern branch.
+
+No periodisation was given to the model. It arrived at a coarse one from
+photographs alone.
+
+## Do styles subdivide?
+
+Running HDBSCAN inside each style's own subspace shows most styles are not
+internally uniform. Nearly every style split into two or three sub-clusters.
+
+<Figure
+	src={subclusters}
+	alt="Small multiple scatter plots showing within-style sub-clustering for each of the 25 architectural styles."
+	caption="Within-style sub-clustering. Most styles split; the interesting question is what the splits correspond to."
+	tall
+/>
+
+Two are worth naming. **Art Nouveau split geographically**: one sub-cluster is
+dominated by Nancy, the other by Riga and Lviv — the French and Eastern European
+schools separated without any location information being supplied. **Achaemenid
+split by site**, isolating Persepolis from the Naqsh-e Rostam rock-cut tombs.
+
+<Figure
+	src={egyptian}
+	alt="Two rows of Egyptian architecture thumbnails, showing the images assigned to each within-style sub-cluster."
+	caption="Egyptian sub-clusters, shown as the actual images. Inspecting the members is the only honest way to decide whether a split is meaningful or an artefact of photographic framing."
+/>
+
+## Limitations
+
+**Clustering ran on the 2-D projection, not the embeddings.** HDBSCAN was fitted
+to UMAP output rather than to the 768-dimensional vectors. This is common
+practice and it makes the clusters match the figure, but UMAP does not preserve
+density faithfully, so the cluster count is partly an artefact of the projection.
+Clustering the full embeddings and comparing would be the first thing to fix.
+
+**The corpus is Western.** All 25 styles are European or American. Any claim
+about similarity "across cultures" is therefore a claim about variation within
+one broad tradition. Adding Hindu, Buddhist, Islamic, Khmer, Mayan and
+Mesopotamian architecture is the obvious extension and would change what the
+top-level split means.
+
+**Photographic convention is a confound.** The corpus is Wikimedia-derived, and
+conventions differ systematically by category — sacred buildings photographed
+frontally and at distance, houses from the street corner. Some of what reads as
+stylistic similarity is similarity of the photograph, not the building.
+
+**CLIP's training data is not neutral.** LAION-2B is heavily Western-weighted,
+so the model's sensitivity is unevenly distributed across exactly the axis the
+project is asking about.
+
+## What's next
+
+Cluster the full 768-dimensional embeddings and treat the UMAP purely as a
+visualisation. Extend the corpus beyond Western styles. Then test the typology
+confound directly, by controlling for viewing angle and building function to see
+how much of the domestic-style collapse survives.

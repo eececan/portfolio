@@ -1,0 +1,88 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import WritingItem from '../../components/WritingItem.astro';
+import Toc from '../../components/Toc.astro';
+
+export const getStaticPaths = (async () => {
+	const projects = await getCollection('projects', ({ data }) => !data.draft);
+	return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}) satisfies GetStaticPaths;
+
+const { project } = Astro.props;
+const { title, tagline, summary, year, status, tags, repo, demo } = project.data;
+const { Content, headings } = await render(project);
+
+// Writings that declare `project: <this project>` in their frontmatter.
+const related = (await getCollection('writing', ({ data }) => !data.draft))
+	.filter((w) => w.data.project?.id === project.id)
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Base title={title} description={summary} ogType="article">
+	<div class="xl:grid xl:grid-cols-[minmax(0,1fr)_11rem] xl:gap-x-14">
+		<article class="min-w-0">
+			<header class="border-b border-rule pb-8">
+				<p class="mb-3 text-[0.78rem] tabular-nums text-faint">
+					{year}
+					{status === 'active' && <span class="ml-2 text-accent">In progress</span>}
+				</p>
+				<h1 class="max-w-[20ch] font-serif text-[2.4rem] font-semibold leading-[1.1] tracking-tight">
+					{title}
+				</h1>
+				<p class="mt-4 max-w-[58ch] font-serif text-[1.08rem] leading-relaxed text-muted">{tagline}</p>
+
+				{
+					(repo || demo) && (
+						<p class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[0.85rem]">
+							{repo && (
+								<a href={repo} class="text-ink underline decoration-accent underline-offset-4">
+									Code repository
+								</a>
+							)}
+							{demo && (
+								<a href={demo} class="text-ink underline decoration-accent underline-offset-4">
+									Live demo
+								</a>
+							)}
+						</p>
+					)
+				}
+
+				{
+					tags.length > 0 && (
+						<ul class="mt-5 flex flex-wrap gap-2 text-[0.73rem] text-faint">
+							{tags.map((t) => (
+								<li class="rounded-sm bg-surface px-1.5 py-0.5">{t}</li>
+							))}
+						</ul>
+					)
+				}
+			</header>
+
+			<div class="prose mt-12">
+				<Content />
+			</div>
+
+			{
+				related.length > 0 && (
+					<section class="mt-20 border-t border-rule pt-10">
+						<h2 class="mb-6 text-[0.8rem] font-medium uppercase tracking-[0.12em] text-faint">
+							Writing from this project
+						</h2>
+						{related.map((w) => (
+							<WritingItem entry={w} compact />
+						))}
+					</section>
+				)
+			}
+
+			<p class="mt-16 text-[0.85rem]">
+				<a href="/projects/" class="text-muted no-underline hover:text-ink">&larr; All projects</a>
+			</p>
+		</article>
+
+		<Toc headings={headings} />
+	</div>
+</Base>

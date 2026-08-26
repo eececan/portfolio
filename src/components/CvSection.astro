@@ -1,0 +1,39 @@
+---
+interface Entry {
+	period: string;
+	what: string;
+	where: string;
+	notes?: string[];
+}
+interface Props {
+	title: string;
+	entries: Entry[];
+}
+const { title, entries } = Astro.props;
+---
+
+<section class="mb-14">
+	<h2 class="mb-6 text-[0.8rem] font-medium uppercase tracking-[0.12em] text-faint">{title}</h2>
+	<ul class="space-y-7">
+		{
+			entries.map((e) => (
+				<li class="grid gap-1.5 sm:grid-cols-[9.5rem_minmax(0,1fr)] sm:gap-x-8">
+					<span class="pt-0.5 text-[0.8rem] tabular-nums text-faint">{e.period}</span>
+					<div>
+						<h3 class="font-serif text-[1.02rem] font-semibold leading-snug">{e.what}</h3>
+						<p class="mt-0.5 text-[0.85rem] text-muted">{e.where}</p>
+						{e.notes && e.notes.length > 0 && (
+							<ul class="mt-2 space-y-1.5">
+								{e.notes.map((n) => (
+									<li class="relative pl-4 text-[0.875rem] leading-relaxed text-muted before:absolute before:left-0 before:text-faint before:content-['—']">
+										{n}
+									</li>
+								))}
+							</ul>
+						)}
+					</div>
+				</li>
+			))
+		}
+	</ul>
+</section>

@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import CvSection from '../components/CvSection.astro';
+import CvTable from '../components/CvTable.astro';
+import { SITE } from '../consts';
+import {
+	CERTIFICATIONS,
+	EDUCATION,
+	EXPERIENCE,
+	LANGUAGES,
+	LEADERSHIP,
+	RESEARCH,
+	SELECTED_PROJECTS,
+	SKILLS,
+	TESTS,
+} from '../data/cv';
+---
+
+<Base title="CV" description="Curriculum vitae of Elif Ece Can — computer engineering, Politecnico di Torino.">
+	<PageHeader
+		title="Curriculum Vitae"
+		intro="MSc student in Computer Engineering at Politecnico di Torino, BSc from Bilkent University. Research in automated program repair and LLM agents."
+	/>
+
+	<p class="-mt-8 mb-14 flex flex-wrap gap-x-5 gap-y-2 text-[0.875rem]">
+		<a href="/cv.pdf" class="text-ink underline decoration-accent underline-offset-4">Download PDF</a>
+		<a href={`mailto:${SITE.email}`} class="text-ink underline decoration-accent underline-offset-4">
+			{SITE.email}
+		</a>
+	</p>
+
+	<CvSection title="Education" entries={EDUCATION} />
+	<CvSection title="Research" entries={RESEARCH} />
+	<CvSection title="Experience" entries={EXPERIENCE} />
+	<CvSection title="Selected projects" entries={SELECTED_PROJECTS} />
+	<CvSection title="Leadership" entries={LEADERSHIP} />
+	<CvTable title="Tests" rows={TESTS} />
+	<CvTable title="Certifications" rows={CERTIFICATIONS} />
+	<CvTable title="Skills" rows={SKILLS} />
+	<CvTable title="Languages" rows={LANGUAGES} />
+</Base>

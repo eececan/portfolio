@@ -1,0 +1,193 @@
+---
+title: 'Negotiated Modernism'
+tagline: 'How much of a manifesto survives contact with a climate.'
+summary: >-
+  A computer-vision pipeline that operationalises Le Corbusier's Five Points of
+  Architecture and measures them across four canonical houses in four climates,
+  asking which principles travel intact and which get renegotiated locally.
+year: '2025'
+status: 'complete'
+order: 2
+tags: ['Computer vision', 'CLIP', 'OpenCV', 'Architectural theory', 'Le Corbusier']
+cover: '../../assets/projects/negotiated-modernism/pilotis-savoye.png'
+coverAlt: 'Villa Savoye with detected pilotis marked in red.'
+repo: 'https://github.com/eececan/negotiated-modernism'
+draft: false
+---
+
+import Figure from '../../components/Figure.astro';
+import glazing from '../../assets/projects/negotiated-modernism/glazing-ratios.png';
+import pilotis from '../../assets/projects/negotiated-modernism/pilotis-savoye.png';
+import planSavoye from '../../assets/projects/negotiated-modernism/open-plan-savoye.png';
+import planRotonda from '../../assets/projects/negotiated-modernism/open-plan-rotonda.png';
+import facade from '../../assets/projects/negotiated-modernism/free-facade-savoye.png';
+import roof from '../../assets/projects/negotiated-modernism/roof-classifier.png';
+
+## The question
+
+A manifesto is written once; a building is built somewhere. Le Corbusier's Five
+Points of Architecture — pilotis, free plan, free facade, horizontal window,
+roof garden — were stated as universal principles. Every architect who adopted
+them did so in a particular climate, on particular ground, for particular
+clients.
+
+This project asks how much of the manifesto survives that contact, and whether
+the deviations are noise or pattern. The objective was to build a computational
+pipeline that quantifies the *negotiation* between the theory and the pragmatic
+realities of climate, geography, and local context as interpreted by Le
+Corbusier's followers.
+
+## Case studies
+
+Four houses: the canonical statement, and three interpretations by architects
+working in hotter, sunnier places. Climate figures are 2015–2024 normals pulled
+from the Open-Meteo archive for each building's coordinates.
+
+<div class="table-wrap">
+
+| Building | Architect | Location | Year | Mean temp | Solar (MJ/m²) | Sun (h/day) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Villa Savoye | Le Corbusier | Poissy, France | 1931 | 12.1 °C | 12.0 | 7.9 |
+| Casa das Canoas | Niemeyer | Rio de Janeiro, Brazil | 1953 | 20.8 °C | 18.1 | 9.6 |
+| Kaufmann Desert House | Neutra | Palm Springs, USA | 1946 | 23.9 °C | 21.1 | 11.3 |
+| Frey House II | Frey | Palm Springs, USA | 1964 | 23.9 °C | 21.1 | 11.3 |
+
+</div>
+
+Two controls sit outside the set: Palladio's Villa Rotonda, as a floor plan that
+should fail an open-plan test, and a conventional suburban house, as an exterior
+that should fail a flat-roof test.
+
+## Operationalising the Five Points
+
+This is the hard part of the project, and the part where a reader should push
+back hardest. A principle stated in prose has to become something a computer can
+measure, and each translation loses something.
+
+**Horizontal window → glazing ratio.** Windows are hand-marked on each facade
+photograph in coloured pen; the pipeline extracts the mark by HSV threshold and
+computes glazed area as a fraction of facade area. Automating the area, not the
+identification.
+
+<Figure
+	src={glazing}
+	alt="Four building facades with hand-marked window regions outlined, labelled with the computed glazing ratio for each."
+	caption="Extracted window regions and glazing ratios. Villa Savoye 0.118, Casa das Canoas 0.278, Kaufmann Desert House 0.235, Frey House II 0.304."
+	plate={false}
+/>
+
+**Free plan → flood-filled room segmentation.** Floor plans are segmented into
+rooms by adaptive flood fill, then scored on three criteria: does the largest
+room dominate the interior (area > 15%), is partition density low (< 20%), and
+is the largest room non-convex (convexity < 0.85), which distinguishes a flowing
+space from a big rectangular one.
+
+<Figure
+	src={planSavoye}
+	alt="Villa Savoye first floor plan segmented into eleven coloured room regions."
+	caption="Villa Savoye, first floor: 11 segmented rooms. The dominant green region wraps around the ramp core — non-convex, which is exactly what the free plan is supposed to produce."
+	plate={false}
+/>
+
+<Figure
+	src={planRotonda}
+	alt="Palladio's Villa Rotonda plan segmented into room regions, showing a symmetrical convex layout."
+	caption="The control: Palladio's Villa Rotonda scores 30/100 and is correctly classified as not open plan — convexity 1.00, a perfectly convex central hall. A scoring rule that passed this would have been worthless."
+	plate={false}
+/>
+
+**Free facade → glass extent ratio.** Measures how completely glazing spans the
+horizontal extent of the window block, on the logic that a facade freed from
+load-bearing duty can run glass edge to edge.
+
+<Figure
+	src={facade}
+	alt="Villa Savoye facade with the horizontal extent of the window block measured against the extent of glass."
+	caption="Free facade test on Villa Savoye: the window block spans 807 px and glass covers all 807 of them, a ratio of 1.00."
+	plate={false}
+/>
+
+**Roof garden → flat-roof classifier.** Roof pitch is a three-dimensional
+property that a single photograph cannot recover geometrically, so the decision
+is made by CLIP zero-shot classification, with a geometric "roof slope index"
+running alongside as a one-sided veto for mono-pitch roofs.
+
+<Figure
+	src={roof}
+	alt="Five buildings with detected roof edges overlaid in green for horizontal and red for sloped, each labelled with the classifier's decision and confidence."
+	caption="Flat-roof classifier: 5/5 correct on this set, including both negative controls. Green edges are horizontal, red are consistently sloped."
+	tall
+	plate={false}
+/>
+
+**Pilotis → vertical support detection.** A Hough transform counts vertical
+supports within a horizontal band at the base of the facade, and reports the
+void ratio of that band.
+
+<Figure
+	src={pilotis}
+	alt="Villa Savoye with eight vertical columns detected and marked in red within a highlighted band at the base of the building."
+	caption="Villa Savoye: 8 columns detected, void ratio 0.88. This is the only building on which the detector is validated — see the limitation below."
+	plate={false}
+/>
+
+## What survives, and what gets renegotiated
+
+**Free plan and free facade travel intact.** All four houses pass both. Open-plan
+scores are 100 for Savoye, Canoas and Frey House II, and 70 for Kaufmann; free
+facade ratios run 1.00, 0.98, 0.97 and 0.83. Whatever else changes when the
+manifesto crosses an ocean, the interior spatial logic goes with it.
+
+**The flat roof mostly survives, but not always.** Savoye, Canoas and Kaufmann
+are classified flat. Frey House II is not — it uses a single-pitch roof, and the
+classifier caught it through the mono-pitch veto. In the Palm Springs desert, a
+sloped plane that throws shade is a better answer than a flat deck, and Frey
+took it.
+
+**The horizontal window survives but gets amplified.** This is the clearest
+pattern in the data. Villa Savoye, in a 12 °C climate with 7.9 hours of daily
+sun, glazes 11.8% of its facade. The three houses in warmer, sunnier places
+glaze 23.5%, 27.8% and 30.4% — roughly double to triple. The ribbon window of
+the manifesto becomes a glass wall once the climate rewards it.
+
+**Pilotis is the point that does not travel.** Only Villa Savoye stands on them.
+The other three sit on or into their ground — Canoas draped over a rock, the
+desert houses anchored to their site.
+
+The shape of that result is worth stating plainly: the points describing how
+space is organised *inside* the building survived transplantation, while the
+points describing how the building meets the ground and the sky were the ones
+that got renegotiated locally. The manifesto's interior logic was portable. Its
+relationship to site was not.
+
+## Limitations
+
+**Four buildings is not a sample.** Nothing here supports a correlation or a
+statistical claim, and the glazing pattern is not even monotonic — Kaufmann sits
+in a hotter climate than Canoas but glazes less. What the data supports is an
+ordering observation with one clear outlier, and that is how it should be read.
+
+**The pilotis detector is validated on one building.** The other three report
+zero columns, but their analysis bands fall over terrace, pool and lawn rather
+than a ground storey. Those zeros happen to match the architecture, but they are
+not measurements and must not be read as any.
+
+**Window marking is manual.** The glazing ratios rest on a person deciding, in
+pen, where a window ends. The pipeline automates the area computation, not the
+judgement, and no inter-annotator agreement was measured.
+
+**Single-view photographs cannot recover roof pitch.** A pitched roof
+photographed along its slope direction projects to a horizontal line and is
+unrecoverable from that image alone. Frey House II was decided at a CLIP margin
+of 0.03 — effectively a coin flip rescued by the geometric veto.
+
+**The scoring thresholds are hand-set.** Area > 15%, density < 20%, convexity <
+0.85 were chosen, not learned. The Villa Rotonda control shows they are not
+trivially permissive, but one control is thin.
+
+## What's next
+
+More buildings per architect, so that individual interpretation can be separated
+from climate. More controls, in both directions. Inter-annotator agreement on
+the window marking. And validating the pilotis detector on buildings that are
+known to stand on pilotis, so that its zeros mean something.

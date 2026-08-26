@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "portfolio",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "export NVM_DIR=\"$HOME/.nvm\"; . \"$NVM_DIR/nvm.sh\" --no-use; nvm use default >/dev/null 2>&1; cd /home/ece/portfolio && exec npm run dev -- --port 4321"
+      ],
+      "port": 4321
+    }
+  ]
+}

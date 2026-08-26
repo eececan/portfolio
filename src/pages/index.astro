@@ -1,17 +1,118 @@
 ---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import WritingItem from '../components/WritingItem.astro';
+import { LINKS, SITE } from '../consts';
+import { RESEARCH } from '../data/cv';
 
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+	(a, b) => a.data.order - b.data.order
+);
+
+const allWriting = await getCollection('writing', ({ data }) => !data.draft);
+const writingCount = (id: string) => allWriting.filter((w) => w.data.project?.id === id).length;
+
+const writing = [...allWriting]
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+	.slice(0, 3);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base>
+	<!-- Intro: statement left, contact rail right -->
+	<section class="lg:grid lg:grid-cols-[minmax(0,1fr)_14rem] lg:gap-x-16">
+		<div>
+			<h1 class="font-serif text-[2.5rem] font-semibold leading-none tracking-tight">{SITE.name}</h1>
+
+			<p class="mt-3 text-[0.95rem] leading-snug text-muted">
+				MSc in Computer Engineering @ Politecnico di Torino &middot; Automated Program Repair &amp; LLM Agents
+			</p>
+
+			{/* TODO(Ece): rewrite this in your own words — it decides what a reader thinks you are. */}
+			<p class="mt-6 font-serif text-[1.1rem] leading-relaxed">
+				I work on automated program repair and on LLM agents that build and test
+				software without a human in the loop.
+			</p>
+
+			<p class="mt-4 text-[0.95rem] leading-relaxed text-muted">
+				Architecture is a hobby that turned into a side project: I use computer
+				vision to measure how building styles relate across time and geography, and
+				what happens to a design manifesto when it meets a climate.
+			</p>
+		</div>
+
+		<div class="mt-10 lg:mt-2">
+			<dl class="space-y-4 border-t border-rule pt-5 text-[0.82rem] lg:border-t-0 lg:pt-0">
+				<div>
+					<dt class="text-faint">Email</dt>
+					<dd class="mt-0.5">
+						<a href={`mailto:${SITE.email}`} class="break-all text-ink underline decoration-accent underline-offset-4">
+							{SITE.email}
+						</a>
+					</dd>
+				</div>
+				<div>
+					<dt class="text-faint">CV</dt>
+					<dd class="mt-0.5 flex gap-x-3">
+						<a href="/cv/" class="text-ink underline decoration-accent underline-offset-4">Web</a>
+						<a href="/cv.pdf" class="text-ink underline decoration-accent underline-offset-4">PDF</a>
+					</dd>
+				</div>
+				<div>
+					<dt class="text-faint">Elsewhere</dt>
+					<dd class="mt-0.5 space-y-0.5">
+						{LINKS.map((l) => (
+							<a href={l.href} rel="me noopener" class="block text-ink underline decoration-accent underline-offset-4">
+								{l.label}
+							</a>
+						))}
+					</dd>
+				</div>
+			</dl>
+		</div>
+	</section>
+
+	<!-- Research: two across -->
+	<section class="mt-24">
+		<h2 class="mb-7 text-[0.8rem] font-medium uppercase tracking-[0.12em] text-faint">Research</h2>
+		<ul class="grid gap-x-14 gap-y-9 lg:grid-cols-2">
+			{
+				RESEARCH.map((r) => (
+					<li class="border-t border-rule pt-4">
+						<p class="text-[0.78rem] tabular-nums text-faint">{r.period}</p>
+						<h3 class="mt-1.5 font-serif text-[1.08rem] font-semibold leading-snug">{r.what}</h3>
+						<p class="mt-2 text-[0.875rem] leading-relaxed text-muted">{r.notes[0]}</p>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<!-- Projects: two across, image-led -->
+	<section class="mt-24">
+		<div class="mb-7 flex items-baseline justify-between gap-4">
+			<h2 class="text-[0.8rem] font-medium uppercase tracking-[0.12em] text-faint">Projects</h2>
+			<a href="/projects/" class="text-[0.82rem] text-muted no-underline hover:text-ink">All projects &rarr;</a>
+		</div>
+		<div class="grid gap-x-12 gap-y-14 lg:grid-cols-2">
+			{projects.map((p) => <ProjectCard project={p} writingCount={writingCount(p.id)} />)}
+		</div>
+	</section>
+
+	<!-- Writing -->
+	{
+		writing.length > 0 && (
+			<section class="mt-24">
+				<div class="mb-4 flex items-baseline justify-between gap-4">
+					<h2 class="text-[0.8rem] font-medium uppercase tracking-[0.12em] text-faint">Writing</h2>
+					<a href="/writing/" class="text-[0.82rem] text-muted no-underline hover:text-ink">
+						All writing &rarr;
+					</a>
+				</div>
+				{writing.map((w) => (
+					<WritingItem entry={w} />
+				))}
+			</section>
+		)
+	}
+</Base>
