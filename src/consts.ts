@@ -3,9 +3,9 @@ export const SITE = {
 	url: 'https://eececan.com',
 	title: 'Elif Ece Can',
 	tagline:
-		'MSc student in Computer Engineering at Politecnico di Torino, BSc from Bilkent University. Research on automated program repair and LLM agents.',
+		'MSc student in Computer Engineering at Politecnico di Torino, working toward human–computer interaction. Hobby projects applying computer vision to architecture.',
 	description:
-		'Elif Ece Can — MSc student in Computer Engineering at Politecnico di Torino, BSc from Bilkent University. Research on automated program repair and LLM-driven build environments.',
+		'Elif Ece Can — MSc student in Computer Engineering at Politecnico di Torino, working toward human–computer interaction. Previously automated program repair and LLM agents at Bilkent University.',
 	email: 'elfececan@gmail.com',
 	locale: 'en',
 } as const;
