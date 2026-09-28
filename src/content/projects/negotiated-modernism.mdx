@@ -23,25 +23,45 @@ import planRotonda from '../../assets/projects/negotiated-modernism/open-plan-ro
 import facade from '../../assets/projects/negotiated-modernism/free-facade-savoye.png';
 import roof from '../../assets/projects/negotiated-modernism/roof-classifier.png';
 
-## The question
+{/* OPENING — two or three sentences: what this is and the one thing you found.
+    Write it last, once "What I found" exists. */}
 
-A manifesto is written once; a building is built somewhere. Le Corbusier's Five
-Points of Architecture — pilotis, free plan, free facade, horizontal window,
-roof garden — were stated as universal principles. Every architect who adopted
-them did so in a particular climate, on particular ground, for particular
-clients.
+## Where it came from
 
-This project asks how much of the manifesto survives that contact, and whether
-the deviations are noise or pattern. The objective was to build a computational
-pipeline that quantifies the *negotiation* between the theory and the pragmatic
-realities of climate, geography, and local context as interpreted by Le
-Corbusier's followers.
+I took architecture history classes in my senior year of computer engineering at
+Bilkent, for fun. Architecture was a hobby of mine and I was genuinely interested
+in it.
 
-## Case studies
+But one era, one concept, confused me: modernism, the "universal style". It was
+too broad. It was not confined to one culture or one country, and there were many
+buildings that do not look like each other at all, yet are all considered modern.
+You do not see this in Baroque, or in Gothic.
 
-Four houses: the canonical statement, and three interpretations by architects
-working in hotter, sunnier places. Climate figures are 2015–2024 normals pulled
-from the Open-Meteo archive for each building's coordinates.
+So I started to investigate it building by building, from the bottom up — not to
+understand modernism first and then go and look at buildings, but the other way
+around.
+
+But how do you investigate each building? Based on what?
+
+Then I decided to compare each building to the ideal modern building: Corbusier's
+Five Points. And I wondered how much these *real* buildings deviate from those
+ideal principles.
+
+That was the first question. Then another one appeared. If they deviate — and I
+know these Five Points are just one man's word — *why* do they deviate? Because of
+climate? Because of geography?
+
+So I took buildings by people similar to Corbusier, from his era, built in
+different parts of the world.
+
+## What I expected
+
+I expected to find that they deviate on some of the points, and that when they do,
+it might be a result of the different climates they were built in.
+
+## The buildings
+
+{/* One or two sentences on why these four, plus the two controls. */}
 
 <div class="table-wrap">
 
@@ -54,63 +74,60 @@ from the Open-Meteo archive for each building's coordinates.
 
 </div>
 
-Two controls sit outside the set: Palladio's Villa Rotonda, as a floor plan that
-should fail an open-plan test, and a conventional suburban house, as an exterior
-that should fail a flat-roof test.
+## How I measured it
 
-## Operationalising the Five Points
+I measured each of the Five Points with computer vision techniques.
 
-This is the hard part of the project, and the part where a reader should push
-back hardest. A principle stated in prose has to become something a computer can
-measure, and each translation loses something.
+Some difficulties ran across all of them. The background of a building was often
+too colourful or too complex to separate the building from. The photographs were
+shot from different angles, so nothing was consistent between one building and
+the next. And floor plans have no absolute standard — every one of them is drawn
+differently.
 
-**Horizontal window → glazing ratio.** Windows are hand-marked on each facade
-photograph in coloured pen; the pipeline extracts the mark by HSV threshold and
-computes glazed area as a fraction of facade area. Automating the area, not the
-identification.
+### 1 · Ribbon windows
 
 <Figure
 	src={glazing}
 	alt="Four building facades with hand-marked window regions outlined, labelled with the computed glazing ratio for each."
-	caption="Extracted window regions and glazing ratios. Villa Savoye 0.118, Casa das Canoas 0.278, Kaufmann Desert House 0.235, Frey House II 0.304."
+	caption="Extracted window regions and glazing ratios, measured as a fraction of the whole photograph."
 	plate={false}
 />
 
-**Free plan → flood-filled room segmentation.** Floor plans are segmented into
-rooms by adaptive flood fill, then scored on three criteria: does the largest
-room dominate the interior (area > 15%), is partition density low (< 20%), and
-is the largest room non-convex (convexity < 0.85), which distinguishes a flowing
-space from a big rectangular one.
+**How I measured it.** Windows are marked by hand on each facade photograph in
+coloured pen. The pipeline pulls the mark out by HSV threshold and computes the
+glazed area as a fraction of the facade. I am automating the *area*, not the
+identification.
 
-<Figure
-	src={planSavoye}
-	alt="Villa Savoye first floor plan segmented into eleven coloured room regions."
-	caption="Villa Savoye, first floor: 11 segmented rooms. The dominant green region wraps around the ramp core — non-convex, which is exactly what the free plan is supposed to produce."
-	plate={false}
-/>
+**What was difficult.** The glass reflected so much that the windows could not be
+found reliably on their own, which is why I drew them manually in the first place.
+Once I was drawing them, two new problems appeared. Windows that sat close
+together got merged into one region, which I fixed by decreasing the kernel. And a
+reddish pen does not survive a reddish background, so I switched to blue.
 
-<Figure
-	src={planRotonda}
-	alt="Palladio's Villa Rotonda plan segmented into room regions, showing a symmetrical convex layout."
-	caption="The control: Palladio's Villa Rotonda scores 30/100 and is correctly classified as not open plan — convexity 1.00, a perfectly convex central hall. A scoring rule that passed this would have been worthless."
-	plate={false}
-/>
+One thing I have not resolved: sun protection and shading. Brise-soleil, deep
+eaves and louvres all change what a window actually does, and none of that is in a
+glazed-area number. I want to circle back to this.
 
-**Free facade → glass extent ratio.** Measures how completely glazing spans the
-horizontal extent of the window block, on the logic that a facade freed from
-load-bearing duty can run glass edge to edge.
+**What I found.** The answer depends on what you divide by, which I did not expect.
 
-<Figure
-	src={facade}
-	alt="Villa Savoye facade with the horizontal extent of the window block measured against the extent of glass."
-	caption="Free facade test on Villa Savoye: the window block spans 807 px and glass covers all 807 of them, a ratio of 1.00."
-	plate={false}
-/>
+<div class="table-wrap">
 
-**Roof garden → flat-roof classifier.** Roof pitch is a three-dimensional
-property that a single photograph cannot recover geometrically, so the decision
-is made by CLIP zero-shot classification, with a geometric "roof slope index"
-running alongside as a one-sided veto for mono-pitch roofs.
+| Building | Of the whole photo | Of the annotated facade |
+| --- | --- | --- |
+| Villa Savoye | 0.118 | 0.907 |
+| Kaufmann Desert House | 0.235 | 0.800 |
+| Casa das Canoas | 0.278 | 0.769 |
+| Frey House II | 0.304 | 0.608 |
+
+</div>
+
+Measured against the whole photograph, Savoye glazes least and Frey House II most.
+Measured against the facade I actually annotated, the order reverses completely —
+Savoye becomes the most glazed at 0.907 and Frey House II the least at 0.608.
+
+{/* Which denominator is the honest one, and why? This is worth a paragraph. */}
+
+### 2 · Flat roof
 
 <Figure
 	src={roof}
@@ -120,74 +137,203 @@ running alongside as a one-sided veto for mono-pitch roofs.
 	plate={false}
 />
 
-**Pilotis → vertical support detection.** A Hough transform counts vertical
-supports within a horizontal band at the base of the facade, and reports the
-void ratio of that band.
+**How I measured it.** Roof pitch is a three-dimensional property and a single
+photograph cannot recover it geometrically, so the decision is made by CLIP
+zero-shot classification. A geometric roof slope index runs alongside it as a
+one-sided veto for mono-pitch roofs.
+
+**What was difficult.** Telling a flat roof from a terrace. The perspective the
+photograph was shot from changes what the roofline even looks like. And Frey House
+II has a tilted roof, which left me with a labelling problem before any code ran:
+what is the correct answer supposed to be?
+
+**What I found.** 5/5 on this set, including both negative controls.
+
+<div class="table-wrap">
+
+| Building | Flat roof | p(flat) | Slope index | Decided by |
+| --- | --- | --- | --- | --- |
+| Villa Savoye | yes | 0.962 | 0.009 | CLIP |
+| Casa das Canoas | yes | 0.695 | 0.075 | CLIP |
+| Kaufmann Desert House | yes | 0.860 | 0.150 | CLIP |
+| Frey House II | no | 0.486 | 0.967 | mono-pitch veto |
+| Suburban house *(control)* | no | 0.256 | 0.000 | CLIP |
+
+</div>
+
+Frey House II came down to a CLIP margin of 0.03, which is effectively a coin
+flip. The geometric veto is the only reason it landed on the right side.
+
+### 3 · Open plan
+
+<Figure
+	src={planSavoye}
+	alt="Villa Savoye first floor plan segmented into eleven coloured room regions."
+	caption="Villa Savoye, first floor: 11 segmented rooms. The dominant green region wraps around the ramp core — non-convex, which is exactly what the free plan is supposed to produce."
+	plate={false}
+/>
+
+**How I measured it.** Floor plans are segmented into rooms by adaptive flood
+fill, then scored on three rules. The largest room must dominate the interior
+(area > 15%), partition density inside it must be low (< 20%), and it must be
+non-convex (convexity < 0.85), which is what separates a flowing space from one
+big rectangular one.
+
+**What was difficult.** The flood fill leaked through doors. My first instinct was
+to find the doors and close them, and then to hunt for a radius sweet spot that
+would bridge gaps without destroying walls. Neither worked.
+
+What worked was morphological bridging — stretching a closing kernel across the
+walls so the fill sees an enclosed space, the way a person does. Pixel-level
+classifiers had failed here because they identify walls without understanding that
+a wall connects to another wall to form a room, so they produce fragments.
+
+Then the bridging itself needed fixing, repeatedly:
+
+- The bridge radius was hardcoded at 60 px, which only worked at one image size. I
+  replaced it with adaptive scaling based on the image diagonal.
+- Rotonda and Canoas leaked to the outside, because my hand-drawn green boundary
+  had tiny gaps at the corners. Applying a closing operation to the green mask
+  *before* extracting it glued the corners shut.
+- Some `_marked` images were one pixel taller or wider than the original, which
+  crashed with an `IndexError`. I forced the marked image to match the base
+  image's dimensions.
+- Small vestibules were disappearing, so I lowered the minimum area threshold from
+  0.5% to 0.1% while keeping the door-bridging radius high.
+- Kaufmann's plan is very wide, so scaling the kernel by the diagonal turned it
+  into a 30-pixel wrecking ball that erased the thin corridor walls. I capped the
+  kernel at 18 px, which preserved the fragile walls of sprawling houses and still
+  closed doors.
+
+Scoring had its own failed attempt. I first used continuous weighted scoring, and
+it broke on the Rotonda. The Rotonda's central circle has almost no internal
+walls, so it scored highly for low wall density and came out looking open. Strict
+rule-based scoring fixed it, and convexity turned out to be the rule that does the
+work.
+
+<Figure
+	src={planRotonda}
+	alt="Palladio's Villa Rotonda plan segmented into room regions, showing a symmetrical convex layout."
+	caption="The control: Palladio's Villa Rotonda, convexity 0.98, score 30/100 — a near-perfectly convex central hall, correctly classified as not open plan. A scoring rule that passed this would have been worthless."
+	plate={false}
+/>
+
+**What I found.**
+
+<div class="table-wrap">
+
+| Building | Area ratio | Wall density | Convexity | Score | Open plan |
+| --- | --- | --- | --- | --- | --- |
+| Villa Savoye | 0.34 | 0.094 | 0.71 | 100 | yes |
+| Casa das Canoas | 0.21 | 0.186 | 0.57 | 100 | yes |
+| Frey House II | 0.50 | 0.149 | 0.79 | 100 | yes |
+| Kaufmann Desert House | 0.15 | 0.179 | 0.79 | 70 | yes |
+| Villa Rotonda *(control)* | 0.14 | 0.021 | 0.98 | 30 | no |
+
+</div>
+
+All four modern houses pass and the Palladian control fails, which is what the
+control was there to check. Kaufmann loses 30 points on the area rule, at 0.15 —
+right on the threshold.
+
+### 4 · Free facade
+
+<Figure
+	src={facade}
+	alt="Villa Savoye facade with the horizontal extent of the window block measured against the extent of glass."
+	caption="Free facade test on Villa Savoye: the window block spans 807 px and glass covers all 807 of them, a ratio of 1.00."
+	plate={false}
+/>
+
+**How I measured it.** The drawn extent ratio: glass pixels divided by the
+horizontal distance between the leftmost and rightmost drawn window. It asks how
+much of the span occupied by the window group is actually glass.
+
+**What was difficult.** Three earlier metrics failed before this one, each for a
+different reason.
+
+*Sum of all window widths, over image width.* Bounding boxes overlap when windows
+are drawn at an angle or wrap around a corner, so coverage came out above 100% —
+Kaufmann scored 1.274. It also punished buildings where the architect deliberately
+left a gap, like a chimney, in the middle of a glass wall.
+
+*Single longest continuous span, over image width.* Too strict. Kaufmann has a
+huge glass facade split into two blocks by a central stone chimney, and no single
+block passed the 50% threshold, so it came out as a false negative. Canoas failed
+too, because its long eaves and the framing of the photograph pushed the image
+width far past the actual width of the building.
+
+*Building-width normalisation using Canny.* Exterior photographs have too much
+high-frequency noise — leaves, sky, reflections, shadows. Canny could not reliably
+find the outer silhouette, so it fell back to the full image dimensions and
+defeated the whole point of normalising.
+
+The drawn extent ratio works because it ignores the background and the margins
+entirely. It only looks inside the span I drew.
+
+**What I found.** All four pass.
+
+<div class="table-wrap">
+
+| Building | Span | Glass | Ratio |
+| --- | --- | --- | --- |
+| Villa Savoye | 807 px | 807 px | 1.00 |
+| Casa das Canoas | 508 px | 497 px | 0.98 |
+| Frey House II | 724 px | 704 px | 0.97 |
+| Kaufmann Desert House | 1200 px | 997 px | 0.83 |
+
+</div>
+
+Kaufmann's missing 17% is the chimney gap — the only interruption in the span.
+
+### 5 · Pilotis
 
 <Figure
 	src={pilotis}
 	alt="Villa Savoye with eight vertical columns detected and marked in red within a highlighted band at the base of the building."
-	caption="Villa Savoye: 8 columns detected, void ratio 0.88. This is the only building on which the detector is validated — see the limitation below."
+	caption="Villa Savoye: 8 columns detected, void ratio 0.88. This is the only building on which the detector is validated."
 	plate={false}
 />
 
-## What survives, and what gets renegotiated
+**How I measured it.** A Hough transform counts vertical supports inside a
+horizontal band at the base of the facade, and reports the void ratio of that
+band.
 
-**Free plan and free facade travel intact.** All four houses pass both. Open-plan
-scores are 100 for Savoye, Canoas and Frey House II, and 70 for Kaufmann; free
-facade ratios run 1.00, 0.98, 0.97 and 0.83. Whatever else changes when the
-manifesto crosses an ocean, the interior spatial logic goes with it.
+**What was difficult.** Manual labelling did not work here, and neither did edge
+detection. The void ratio did. What improved it was giving the detector only one
+coordinate instead of a full band definition.
 
-**The flat roof mostly survives, but not always.** Savoye, Canoas and Kaufmann
-are classified flat. Frey House II is not — it uses a single-pitch roof, and the
-classifier caught it through the mono-pitch veto. In the Palm Springs desert, a
-sloped plane that throws shade is a better answer than a flat deck, and Frey
-took it.
+The band itself is the real problem. It is defined as a fraction of image height,
+and on the other three buildings that fraction lands on terrace, pool or lawn
+rather than a ground storey. On Canoas the band comes out 9 px tall — 6% of the
+image — which the code now warns about, because a strip that thin cannot contain a
+storey.
 
-**The horizontal window survives but gets amplified.** This is the clearest
-pattern in the data. Villa Savoye, in a 12 °C climate with 7.9 hours of daily
-sun, glazes 11.8% of its facade. The three houses in warmer, sunnier places
-glaze 23.5%, 27.8% and 30.4% — roughly double to triple. The ribbon window of
-the manifesto becomes a glass wall once the climate rewards it.
+**What I found.** Savoye: 8 columns, void ratio 0.88. The other three report zero.
 
-**Pilotis is the point that does not travel.** Only Villa Savoye stands on them.
-The other three sit on or into their ground — Canoas draped over a rock, the
-desert houses anchored to their site.
+That happens to agree with the architecture, since Savoye is the only one of the
+four genuinely raised on pilotis — but it is agreement by coincidence, not
+measurement. The detector is validated on Savoye alone, and the zeros elsewhere
+are absences, not evidence.
 
-The shape of that result is worth stating plainly: the points describing how
-space is organised *inside* the building survived transplantation, while the
-points describing how the building meets the ground and the sky were the ones
-that got renegotiated locally. The manifesto's interior logic was portable. Its
-relationship to site was not.
+## What I got wrong
 
-## Limitations
+{/* Left blank. The density rule that always returned 0.000 is the one we verified
+    together, if you want to use it. */}
 
-**Four buildings is not a sample.** Nothing here supports a correlation or a
-statistical claim, and the glazing pattern is not even monotonic — Kaufmann sits
-in a hotter climate than Canoas but glazes less. What the data supports is an
-ordering observation with one clear outlier, and that is how it should be read.
+## What I found
 
-**The pilotis detector is validated on one building.** The other three report
-zero columns, but their analysis bands fall over terrace, pool and lawn rather
-than a ground storey. Those zeros happen to match the architecture, but they are
-not measurements and must not be read as any.
+{/* The conclusion. Left empty as you asked. */}
 
-**Window marking is manual.** The glazing ratios rest on a person deciding, in
-pen, where a window ends. The pipeline automates the area computation, not the
-judgement, and no inter-annotator agreement was measured.
+## What I still wonder
 
-**Single-view photographs cannot recover roof pitch.** A pitched roof
-photographed along its slope direction projects to a horizontal line and is
-unrecoverable from that image alone. Frey House II was decided at a CLIP margin
-of 0.03 — effectively a coin flip rescued by the geometric veto.
+{/* Left blank. */}
 
-**The scoring thresholds are hand-set.** Area > 15%, density < 20%, convexity <
-0.85 were chosen, not learned. The Villa Rotonda control shows they are not
-trivially permissive, but one control is thin.
+## Tech stack
 
-## What's next
+{/* Trim to what you actually used. */}
 
-More buildings per architect, so that individual interpretation can be separated
-from climate. More controls, in both directions. Inter-annotator agreement on
-the window marking. And validating the pilotis detector on buildings that are
-known to stand on pilotis, so that its zeros mean something.
+Python · OpenCV · CLIP (`open_clip_torch`) · NumPy · pandas · Matplotlib ·
+Open-Meteo archive API · Google Colab
+
+[Code repository](https://github.com/eececan/Negotiated-Modernism)
