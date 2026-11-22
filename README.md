@@ -1,30 +1,49 @@
-# Elif Ece Can — portfolio
+# Elif Ece Can
 
-An Astro static site for the portfolio at [eececan.com](https://eececan.com). The site and downloadable CV use the profile in `profile.json`; project pages and writing are maintained separately as Markdown/MDX content.
+Personal portfolio and academic profile for [Elif Ece Can](https://eececan.com), featuring research, projects, and a downloadable CV.
 
-## Update the profile
+Built with Astro, the site is statically generated and deployed with GitHub Pages. Profile information is maintained in one place and used to generate both the web CV and its PDF version. Project and writing pages use Markdown and MDX.
 
-Edit `profile.json` for the name, contact information, links, introductory text, and CV entries. The website and generated CV read this file. The previous CV source, `src/content/cv/main.tex`, is kept as a reference; edit `profile.json` for future changes instead.
+## Features
 
-Project pages live in `src/content/projects/`; add writing to `src/content/writing/`. Site layout and styling live in `src/pages/`, `src/components/`, and `src/styles/`. The browser follows the visitor's light or dark system preference.
+- Research and project pages with responsive layouts
+- A web CV and a downloadable PDF generated from shared profile data
+- Light and dark themes based on the visitor’s system preference
+- RSS, sitemap, and search and social metadata
 
-## Build locally
+## Getting started
 
-Install Node.js 22.23.4 or newer and a TeX distribution with XeLaTeX, Latin Modern fonts, and the LaTeX packages `geometry`, `tabularx`, `enumitem`, and `hyperref`. Then run:
+Requirements: Node.js 22.23.4 or later. A TeX distribution with XeLaTeX is also required for production builds and PDF generation.
 
 ```sh
 npm ci
-npm run dev       # local development server
-npm run build     # production site in dist/
-npm run preview   # preview the production build
+npm run dev
 ```
 
-The CV generator reads `profile.json` and produces a LaTeX source in `generated/cv.tex` and the downloadable `public/cv.pdf`. Review both the web CV and PDF after changing profile details.
+The development server runs at `http://localhost:4321` by default. To create and preview a production build:
 
-## GitHub Pages and the custom domain
+```sh
+npm run build
+npm run preview
+```
 
-The workflow in `.github/workflows/deploy.yml` builds the site and deploys it on pushes to `main`. In the repository's **Settings → Pages**, select **GitHub Actions** as the source. Set `eececan.com` as the custom domain in those settings; the `CNAME` file alone does not configure a domain when deploying with Actions. The repository must be public for GitHub Pages on GitHub Free.
+The build regenerates `public/cv.pdf` and its LaTeX source in `generated/cv.tex`, then writes the static site to `dist/`. The TeX installation must include Latin Modern fonts and the `geometry`, `tabularx`, `enumitem`, `needspace`, `xcolor`, and `hyperref` packages. The [deployment workflow](.github/workflows/deploy.yml) lists the packages used on Ubuntu.
 
-Before pointing DNS to GitHub, [verify the domain for the GitHub account](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages) and add it to the repository's Pages settings. Then configure DNS at the domain provider using [GitHub's current custom-domain instructions](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site). Enable **Enforce HTTPS** in Pages settings when it becomes available. DNS and certificate provisioning can take time.
+## Project structure
 
-If the domain changes, update `profile.site.url`, `public/CNAME`, the Pages setting, and DNS together. Astro uses the profile URL for canonical links, RSS, sitemap and robots.txt.
+| Path | Purpose |
+| --- | --- |
+| `profile.json` | Profile, contact links, introductory text, and CV entries |
+| `src/content/projects/` | Project pages and their metadata |
+| `src/content/writing/` | Optional writing entries |
+| `src/pages/` | Site routes |
+| `src/components/` and `src/layouts/` | Reusable components and page layouts |
+| `src/styles/` | Site styles |
+| `scripts/generate-cv.mjs` | CV source and PDF generator |
+| `public/` | Static files, including the generated CV |
+
+Edit `profile.json` to update the web and PDF CVs, then run `npm run build` and review the output. The earlier LaTeX CV at `src/content/cv/main.tex` is retained for reference; it is not the source used by the generator.
+
+## Deployment
+
+Pushes to `main` trigger the [GitHub Actions workflow](.github/workflows/deploy.yml), which builds the site and publishes it to GitHub Pages. The site URL in `profile.json` is used for canonical URLs, RSS, the sitemap, and `robots.txt`.
