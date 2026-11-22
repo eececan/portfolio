@@ -1,0 +1,280 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+\usepackage{fontawesome5}
+\usepackage[scale=0.90,lf]{FiraMono}
+
+\definecolor{light-grey}{gray}{0.83}
+\definecolor{dark-grey}{gray}{0.3}
+\definecolor{text-grey}{gray}{.08}
+
+\DeclareRobustCommand{\ebseries}{\fontseries{eb}\selectfont}
+\DeclareTextFontCommand{\texteb}{\ebseries}
+
+\usepackage{contour}
+\usepackage[normalem]{ulem}
+\renewcommand{\ULdepth}{1.8pt}
+\contourlength{0.8pt}
+\newcommand{\myuline}[1]{%
+  \uline{\phantom{#1}}%
+  \llap{\contour{white}{#1}}%
+}
+
+\usepackage{tgheros}
+\renewcommand*\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{0in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+    \bfseries \vspace{2pt} \raggedright \large
+}{}{0em}{}[\color{light-grey} {\titlerule[2pt]} \vspace{-4pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-1pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & {\color{dark-grey}\small #2}\vspace{1pt}\\
+      \textit{#3} & {\color{dark-grey} \small #4}\\
+    \end{tabular*}\vspace{-4pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+      #1 & {\color{dark-grey}\small #2} \\
+    \end{tabular*}\vspace{-4pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{0pt}}
+
+\color{text-grey}
+
+%-------------------------------------------
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\LARGE Elif Ece Can} \\ \vspace{5pt}  
+    \small \faPhone* \texttt{+90 546 582 2004} \hspace{1pt} $|$
+    \hspace{1pt} \faEnvelope \hspace{2pt} \texttt{elfececan@gmail.com} \hspace{1pt} $|$
+    \hspace{1pt} \faLinkedin \hspace{2pt} \texttt{linkedin.com/in/elif-ece-can} \hspace{1pt}
+\end{center}
+
+%-----------EXPERIENCE-----------
+\section{EXPERIENCE}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Meteksan Savunma}{Oct. 2025 -- Jun. 2026}
+      {Candidate Software Engineer}{Ankara, Türkiye}
+      \resumeItemListStart
+        \resumeItem{Developed and maintained internal testing software tools using C\# and .NET framework}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Meteksan Savunma}{Aug. 2025 -- Sept. 2025}
+      {Machine Learning Intern}{Ankara, Türkiye}
+      \resumeItemListStart
+        \resumeItem{Applied predictive modeling and data analysis to optimize hardware test design workflows, reducing overhead in testing processes}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Università Degli Studi Dell'Aquila}{Jun. 2025 -- Jul. 2025}
+      {Software Engineer Intern in Bioinformatics}{L'Aquila, Italy}
+      \resumeItemListStart
+        \resumeItem{Developed MiRNASearch, a full-stack web application for analyzing relationships between microRNAs, genes, and biological pathways using Spring Boot and Neo4j graph database}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {{\. I}\c{s}net}{Aug. 2024 -- Aug. 2024}
+      {Security Management Intern}{Ankara, Türkiye}
+      \resumeItemListStart
+        \resumeItem{Gained hands-on experience in Security Operations Center (SOC) analysis and social engineering threat practices}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {MobileAction}{Jul. 2024 -- Jul. 2024}
+      {Software Engineer Intern}{Ankara, Türkiye}
+       \resumeItemListStart
+        \resumeItem{Built a full-stack air pollution analysis web application using Spring Boot, H2 Database and OpenWeatherMap API}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+
+%-----------EDUCATION-----------
+\section{EDUCATION}
+  \resumeSubHeadingListStart
+      \resumeSubheading
+          {Politecnico di Torino}{Sep. 2026-}
+          {M.Sc. in Computer Engineering \textnormal{--- Specialization in Human-Computer Interaction}}{Turin, Italy}
+    \resumeSubheading
+      {Bilkent University}{Sep. 2022 -- Jun. 2026}
+      {B.Sc. in Computer Engineering \textnormal{--- CGPA: \textbf{3.36 / 4.00}}}{Ankara, Türkiye}
+      \resumeItemListStart
+        \resumeItem{\textbf{Coursework}: Data Structures and Algorithms, Database Systems, Operating Systems, Object-Oriented Software Engineering}
+        \resumeItem{\textbf{Honour Certificates}: Received 6 Honour and High Honour titles for consistently strong academic performance}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Università Degli Studi Dell'Aquila --- Erasmus Program}{Feb. 2025 -- Jul. 2025}
+      {Exchange Semester}{L'Aquila, Italy}
+      \resumeItemListStart
+        \resumeItem{\textbf{Courses}: Deep Neural Networks, Cloud Architecture, Bioinformatics, Information Security, Signal Processing}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+
+%-----------RESEARCH-----------
+\section{RESEARCH}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Bilkent University}{Ankara, Türkiye}
+      {Undergraduate Researcher}{}
+
+      \resumeSubSubheading{Automated Program Repair (APR)}{Jan. 2026 -- May 2026}
+      \resumeItemListStart
+        \resumeItem{Conducting a multidimensional characterization study of software defect benchmarks to analyze evaluation bias in automated program repair}
+      \resumeItemListEnd
+
+      \resumeSubSubheading{LLM-Driven Build \& Test Environments}{Sep. 2025 -- Present}
+      \resumeItemListStart
+      \resumeItem{Investigating the application of LLMs and LLM agents to automate build processes and  environment setup of open-source software}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+\section{PROJECTS}
+    \resumeSubHeadingListStart
+
+     \resumeProjectHeading
+              {\textbf{Autonomous Containerization of Open-Source Software} $|$ \emph{Docker, OpenAI, LangChain}}{Sep. 2025 -- Present}
+              \resumeItemListStart
+                \resumeItem{Capstone project: Developed a ReAct-based agent for autonomous Docker environment construction and build automation, validated on 282 repositories across 46 build systems and 11 application domains with a 69.5\% smoke-test success rate at an average cost of \$0.087 per repository.}
+                \resumeItem{\textbf{Award:} Received the \textit{Senior Design Project Productivity Award} at Bilkent University CS Fair 2026, Department of Computer Engineering.}
+            \resumeItemListEnd
+          
+      \resumeProjectHeading
+          {\textbf{MiRNASearch} $|$ \emph{Spring Boot, Neo4j, Vue.js}}{May 2025 -- Jul. 2025}
+          \resumeItemListStart
+            \resumeItem{Built a full-stack bioinformatics tool aggregating MiRNA-Gene prediction data to visualize MicroRNA--Gene--Pathway relationships via a Neo4j graph database and Vue.js front-end}
+          \resumeItemListEnd
+
+    \resumeProjectHeading
+              {\textbf{CNN Initialization and Training Performance Study} $|$ \emph{PyTorch, Python}}{Feb. 2025 -- Jul. 2025}
+              \resumeItemListStart
+                \resumeItem{Investigated the effect of weight initialization schemes on CNN performance using the Fashion MNIST dataset, with the best configuration achieving 90.37\% test accuracy}
+              \resumeItemListEnd
+          
+      \resumeProjectHeading
+          {\textbf{Bilkent Information Office Web Application} $|$ \emph{Spring Boot, PostgreSQL, Vue.js}}{Sep. 2024 -- Dec. 2024}
+          \resumeItemListStart
+            \resumeItem{Developed a web application to streamline tour and fair management for prospective students at Bilkent University}
+          \resumeItemListEnd
+
+     \resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS-----------
+\section{CERTIFICATIONS}
+ \begin{itemize}[leftmargin=0in, label={}]
+    \small{\item{
+     \textbf{IELTS Academic} {: Band 8.0 / 9.0 --- CEFR C1 (Sep. 2025)}\vspace{2pt} \\
+     \textbf{GRE General Test} {: 328/340 --- Quantitative 170/170 (Sep. 2025)}\vspace{2pt} \\
+     \textbf{AWS Academy Graduate --- Cloud Foundations} {: Amazon Web Services (Jun. 2025)}\vspace{2pt} \\
+     \textbf{The Complete Machine Learning Course with Python} {: Udemy (Feb. 2025)} \\
+     \textbf{Microservices Foundations Professional Certificate} {: Kong Inc. (Aug. 2024)}\vspace{2pt} \\
+     \textbf{Apple Search Ads Certificate} {: Apple (Jul. 2024)}
+    }}
+ \end{itemize}
+
+%-----------SKILLS-----------
+\section{SKILLS}
+ \begin{itemize}[leftmargin=0in, label={}]
+    \small{\item{
+     \textbf{Languages} {: Java, C, C++, C\#, Python, JavaScript, HTML/CSS, SQL}\vspace{2pt} \\
+     \textbf{Frameworks} {: Spring Boot, .NET, Blazor, Vue.js}\vspace{2pt} \\
+     \textbf{Data/AI} {: Pandas, NumPy, PyTorch, LangChain, LLM Agents, OpenAI API}\vspace{2pt} \\
+     \textbf{Databases} {: PostgreSQL, Neo4j, MySQL, H2}\vspace{2pt} \\
+     \textbf{Cloud \& DevOps} {: AWS, Azure, Docker, Git, Linux}
+    }}
+ \end{itemize}
+
+ 
+%-----------LEADERSHIP-----------
+\section{LEADERSHIP}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Bilkent Young Entrepreneurs Society (\href{https://www.bilkentyes.com/}{\myuline{BilkentYES}})}{2022 -- Present}
+      {President of the Supervisory Board; Chairwoman of the Board; Sponsorship Coordinator}{}
+      \resumeItemListStart
+        \resumeItem{Led one of Bilkent University's largest student societies with $\sim$1500 members, managing sponsorships and partnerships for national-scale events}
+        \resumeItem{Organized the \href{https://www.ankarastartup.com/}{\myuline{Ankara Start-up Summit}}, one of Turkey's most prominent entrepreneurship summits that hosts around 800 participants, 20 sponsors and venture capital organizations each year}
+        \resumeItem{Developed and maintained the Ankara Start-up Summit website, streamlining the competition application process and advertisements for the event}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+  
+%-----------LANGUAGES-----------
+\section{LANGUAGES}
+ \begin{itemize}[leftmargin=0in, label={}]
+    \small{\item{
+     \textbf{Turkish} {: Native} $|$ \textbf{English} {: C1} $|$ \textbf{French} {: B1} $|$ \textbf{Italian} {: B1}
+    }}
+ \end{itemize}
+
+%-------------------------------------------
+\end{document}
