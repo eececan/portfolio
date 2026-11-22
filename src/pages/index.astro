@@ -13,12 +13,44 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 const allWriting = await getCollection('writing', ({ data }) => !data.draft);
 const writingCount = (id: string) => allWriting.filter((w) => w.data.project?.id === id).length;
 
+const siteUrl = new URL('/', Astro.site ?? SITE.url).href;
+const personId = `${siteUrl}#person`;
+const websiteId = `${siteUrl}#website`;
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'ProfilePage',
+			'@id': `${siteUrl}#profile`,
+			url: siteUrl,
+			name: SITE.name,
+			mainEntity: { '@id': personId },
+			isPartOf: { '@id': websiteId },
+		},
+		{
+			'@type': 'Person',
+			'@id': personId,
+			name: SITE.name,
+			url: siteUrl,
+			description: SITE.description,
+			sameAs: LINKS.map((link) => link.href),
+		},
+		{
+			'@type': 'WebSite',
+			'@id': websiteId,
+			name: SITE.name,
+			url: siteUrl,
+			publisher: { '@id': personId },
+		},
+	],
+};
+
 const writing = [...allWriting]
 	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 	.slice(0, 3);
 ---
 
-<Base>
+<Base fullTitle={`${SITE.name} — Computer Engineering & Human–Computer Interaction`} {structuredData}>
 	<!-- Intro: statement left, contact rail right -->
 	<section class="lg:grid lg:grid-cols-[minmax(0,1fr)_14rem] lg:gap-x-16">
 		<div>

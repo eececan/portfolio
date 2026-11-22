@@ -8,11 +8,15 @@ interface Props {
 	title?: string;
 	description?: string;
 	ogType?: 'website' | 'article';
+	fullTitle?: string;
+	structuredData?: Record<string, unknown>;
 }
 
-const { title, description = SITE.description, ogType = 'website' } = Astro.props;
+const { title, description = SITE.description, ogType = 'website', fullTitle, structuredData } = Astro.props;
 
-const pageTitle = title ? `${title} — ${SITE.name}` : SITE.title;
+const pageTitle = fullTitle ?? (title ? `${title} — ${SITE.name}` : SITE.title);
+// Escape HTML-significant characters before embedding JSON in a script element.
+const jsonLd = structuredData && JSON.stringify(structuredData).replace(/</g, '\\u003c');
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -34,7 +38,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<meta property="og:title" content={pageTitle} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
-		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:card" content="summary" />
+
+		{jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
 
 		<link rel="alternate" type="application/rss+xml" title={SITE.name} href={new URL('rss.xml', Astro.site)} />
 	</head>
