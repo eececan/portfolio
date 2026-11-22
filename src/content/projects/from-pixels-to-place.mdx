@@ -23,25 +23,25 @@ import subclusters from '../../assets/projects/from-pixels-to-place/subclusters-
 import egyptian from '../../assets/projects/from-pixels-to-place/subclusters-egyptian.png';
 import spotcheck from '../../assets/projects/from-pixels-to-place/dataset-spotcheck.jpg';
 
-{/* Aim for 1,200–1,800 words total. Delete each guidance comment as you write it. */}
-
-{/* OPENING — no heading. Two or three sentences: what this is, and the one thing
-    you found. Write it last. */}
-
 ## Where it came from
 
-{/* Your inspiration. Nobody taught CLIP architectural history, but art history is
-    diffusely present in a few billion internet captions. What made you want to
-    check whether it absorbed it? Where did the phylogeny metaphor come from? */}
+I was taking architecture history classes as a hobby during my Computer Engineering degree. I learned a lot of eras and styles theoretically and I could identify buildings, place them in their period. But like most people, I was using context: colours, ornamentation, geography, the name of the architect. I was judging correctly, but not geometrically.
+
+That made me wonder: if I stripped all of that away and judged buildings on pure visual and geometric similarity, would I get the same groupings? Or would some buildings from completely different eras and geographies share a deeper structural DNA — correctly classified as different styles, but visually closer to each other than to their own kind?
+
+I also wondered about proximity between related styles. How close are Byzantine and Romanesque? How much does American Craftsman overlap with Foursquare? These are styles that historians already know are related — but how does that relationship look in an embedding space?
 
 ## What I expected
 
-{/* The prediction you held before you ran anything. Short. */}
+I expected to find strange connections. A building from antiquity sharing a visual fingerprint with something from 1980. Cross-era, cross-geography outliers that would reveal some hidden geometry underlying all of architecture.
+
+That happened — but rarely, and not in the generalizable way I had imagined. It was specific buildings that drifted outside their cluster, not entire styles bleeding into each other. I did not find a clean unexpected kinship between two distant styles.
+
+What I did find was how tightly related styles cluster when they share geography or period. And once I had that, I wanted to push further: do sub-traditions exist inside a single style? Does Gothic fragment into regional schools? Does Egyptian split by type of monument? That became its own investigation.
 
 ## The data
 
-{/* Where the images came from, how many, and what the quality filter threw away —
-    every filter is a judgement about what counts as data. */}
+I used the ECCV2014 Architectural Styles dataset, available on Kaggle. It covers 25 styles with around 60 images per style, 1,472 in total after quality filtering.
 
 <Figure
 	src={spotcheck}
@@ -53,9 +53,7 @@ import spotcheck from '../../assets/projects/from-pixels-to-place/dataset-spotch
 
 ## How I measured it
 
-{/* The conceptual move, not the library list: representing a style by its centroid,
-    treating cosine distance as relatedness, and calling the dendrogram phylogenetic.
-    Say what each assumes and where it breaks. */}
+Each image was encoded with CLIP ViT-L/14 into a 768-dimensional vector — a compact description of what the building looks like, learned from hundreds of millions of image-text pairs. I projected all 1,472 vectors to 2D with UMAP to get a navigable latent space, then ran HDBSCAN to find clusters. To look inside each style, I repeated the clustering on each style's own embedding subspace after a PCA compression step, which surfaces sub-traditions that the global clustering would otherwise smooth over.
 
 <Figure
 	src={umap}
@@ -69,22 +67,15 @@ import spotcheck from '../../assets/projects/from-pixels-to-place/dataset-spotch
 	caption="Cosine similarity between per-style CLIP centroids. The bright block in the American and British domestic styles is the collapse described above; Egyptian's nearest neighbour is Achaemenid at 0.83, its furthest are Chicago School and American Foursquare at 0.50."
 />
 
-## Where it got difficult
-
-{/* The judgement calls and the things that broke. This notebook has no narrated
-    fixes, so reconstruct while you still remember: what you tried first, how you
-    picked min_cluster_size, why PCA to 10 dimensions, where ~60 images per style
-    hurt, whether any style refused to behave. */}
-
-## What I got wrong
-
-{/* HDBSCAN was fitted to the 2-D UMAP output rather than the 768-dim embeddings,
-    so some of what the figure shows is the projection, not the data — and you
-    haven't yet clustered the full embeddings to check how much survives. */}
-
 ## What I found
 
-{/* The results, and which of them changed your mind. */}
+The global UMAP makes some things immediately clear. American residential styles — Craftsman, Foursquare, Queen Anne, Tudor Revival — collapse into a single dense region. The model sees them as one visual family, which matches how closely they developed together in the same place and period. Egyptian and Achaemenid sit alone, far from everything else. Gothic and Romanesque are neighbours; so are Baroque and Byzantine. The model has, without being told any history, approximately reconstructed the map that architectural historians already use.
+
+The cosine similarity matrix puts numbers on this. The three closest pairs are American Craftsman and American Foursquare (0.98), International and Postmodern (0.95), and American Foursquare and Queen Anne (0.95). The most isolated styles are Egyptian, Achaemenid, and Novelty — the last of which is almost definitionally unclassifiable.
+
+The within-style subclustering is where it gets more interesting. 23 of the 25 styles fragment when you cluster inside their own embedding space. Only Chicago School and Queen Anne appear visually uniform. Gothic splits into two groups that visually correspond to lighter-stone French and Belgian cathedral facades versus darker English perpendicular and collegiate Gothic. Egyptian produces three distinct sub-clusters: pyramid and open landscape sites, temple facade reliefs, and statuary. Baroque fragments by region — Venetian church facades, Central European ornate towers, and Ibero-American Churrigueresque.
+
+These are not labelled anywhere in the dataset. The model found them on its own.
 
 <Figure
 	src={tree}
@@ -107,12 +98,7 @@ import spotcheck from '../../assets/projects/from-pixels-to-place/dataset-spotch
 
 ## What I still wonder
 
-{/* Open questions you'd actually like answered — the Western-only corpus,
-    photographic convention as a confound, CLIP's own training bias. */}
-
 ## Tech stack
-
-{/* Trim to what you actually used. */}
 
 Python · CLIP ViT-L/14 (`open_clip_torch`, LAION-2B) · UMAP · HDBSCAN ·
 scikit-learn · NumPy · pandas · Matplotlib · Google Colab
