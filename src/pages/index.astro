@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import WritingItem from '../components/WritingItem.astro';
-import { LINKS, SITE } from '../consts';
+import { INTRO, LINKS, SITE } from '../consts';
 import { RESEARCH } from '../data/cv';
 
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
@@ -24,25 +24,11 @@ const writing = [...allWriting]
 		<div>
 			<h1 class="font-serif text-[2.5rem] font-semibold leading-none tracking-tight">{SITE.name}</h1>
 
-			<p class="mt-3 text-[0.95rem] leading-snug text-muted">
-				MSc Computer Engineering @ Politecnico di Torino &middot; Human&#8211;Computer Interaction
-			</p>
+			<p class="mt-3 text-[0.95rem] leading-snug text-muted">{INTRO.headline}</p>
 
-			{/* TODO(Ece): rewrite this in your own words — it decides what a reader thinks you are. */}
-			<p class="mt-6 font-serif text-[1.1rem] leading-relaxed">
-				I am an MSc student at Politecnico di Torino, working toward
-				human&#8211;computer interaction &mdash; how people actually use an interface,
-				and how you measure that honestly. Before this I worked on automated program
-				repair and on LLM agents that build and test software without a human in the
-				loop.
-			</p>
+			<p class="mt-6 font-serif text-[1.1rem] leading-relaxed">{INTRO.homePrimary}</p>
 
-			<p class="mt-4 text-[0.95rem] leading-relaxed text-muted">
-				The projects here are hobby work &mdash; things I was curious enough about to
-				spend months on. Both apply computer vision to architecture: measuring how
-				building styles relate across time and geography, and what happens to a design
-				manifesto when it meets a climate.
-			</p>
+			<p class="mt-4 text-[0.95rem] leading-relaxed text-muted">{INTRO.homeSecondary}</p>
 		</div>
 
 		<div class="mt-10 lg:mt-2">

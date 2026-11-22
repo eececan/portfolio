@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
-import { LINKS, SITE } from '../consts';
+import { INTRO, LINKS, SITE } from '../consts';
 ---
 
 <Base title="About" description="About Elif Ece Can.">
@@ -9,22 +9,7 @@ import { LINKS, SITE } from '../consts';
 		<PageHeader title="About" />
 
 		<div class="prose max-w-[62ch]">
-			{/* TODO(Ece): replace with your own text. Two or three short paragraphs is plenty. */}
-			<p>
-				I am an MSc student in Computer Engineering at Politecnico di Torino, with
-				a BSc from Bilkent University, working toward human–computer interaction.
-				Before this my research was in software engineering: a characterisation
-				study of defect benchmarks and evaluation bias in automated program repair,
-				and separately, using LLM agents to automate build and test environment
-				setup for open-source software.
-			</p>
-			<p>
-				The projects on this site are hobby work — things I was curious enough about
-				to spend months on. Both apply computer vision to architecture: one mapping
-				architectural style similarity across 25 traditions in CLIP latent space, the
-				other measuring how much of Le Corbusier’s Five Points survives being built
-				in a different climate.
-			</p>
+			{INTRO.about.map((paragraph) => <p>{paragraph}</p>)}
 		</div>
 
 		<section class="mt-14">

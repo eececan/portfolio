@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CvSection from '../components/CvSection.astro';
 import CvTable from '../components/CvTable.astro';
-import { SITE } from '../consts';
+import { INTRO, SITE } from '../consts';
 import {
 	CERTIFICATIONS,
 	EDUCATION,
@@ -20,7 +20,7 @@ import {
 <Base title="CV" description="Curriculum vitae of Elif Ece Can — computer engineering, Politecnico di Torino.">
 	<PageHeader
 		title="Curriculum Vitae"
-		intro="MSc student in Computer Engineering at Politecnico di Torino, BSc from Bilkent University. Working toward human–computer interaction; previously automated program repair and LLM agents."
+		intro={INTRO.cv}
 	/>
 
 	<p class="-mt-8 mb-14 flex flex-wrap gap-x-5 gap-y-2 text-[0.875rem]">

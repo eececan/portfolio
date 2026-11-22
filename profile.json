@@ -1,0 +1,244 @@
+{
+  "site": {
+    "name": "Elif Ece Can",
+    "url": "https://eececan.com",
+    "title": "Elif Ece Can",
+    "tagline": "MSc student in Computer Engineering at Politecnico di Torino, specializing in human–computer interaction. Hobby projects applying computer vision to architecture.",
+    "description": "Elif Ece Can — MSc student in Computer Engineering at Politecnico di Torino, specializing in human–computer interaction. Research in automated program repair and LLM agents at Bilkent University.",
+    "email": "elfececan@gmail.com",
+    "locale": "en"
+  },
+  "links": [
+    {
+      "href": "https://github.com/eececan",
+      "label": "GitHub"
+    },
+    {
+      "href": "https://linkedin.com/in/elif-ece-can",
+      "label": "LinkedIn"
+    }
+  ],
+  "intro": {
+    "headline": "MSc Computer Engineering @ Politecnico di Torino · Human–Computer Interaction",
+    "homePrimary": "I am an MSc student in Computer Engineering at Politecnico di Torino, specializing in human–computer interaction — how people actually use an interface, and how you measure that honestly. My research has included automated program repair and LLM agents that build and test software without a human in the loop.",
+    "homeSecondary": "The projects here are hobby work — things I was curious enough about to spend months on. Both apply computer vision to architecture: measuring how building styles relate across time and geography, and what happens to a design manifesto when it meets a climate.",
+    "about": [
+      "I am an MSc student in Computer Engineering at Politecnico di Torino, with a BSc from Bilkent University, specializing in human–computer interaction. My research in software engineering includes a characterisation study of defect benchmarks and evaluation bias in automated program repair, and using LLM agents to automate build and test environment setup for open-source software.",
+      "The projects on this site are hobby work — things I was curious enough about to spend months on. Both apply computer vision to architecture: one mapping architectural style similarity across 25 traditions in CLIP latent space, the other measuring how much of Le Corbusier’s Five Points survives being built in a different climate."
+    ],
+    "cv": "MSc student in Computer Engineering at Politecnico di Torino, specializing in human–computer interaction; BSc from Bilkent University. Research in automated program repair and LLM agents."
+  },
+  "cv": {
+    "education": [
+      {
+        "period": "Sep 2026 – present",
+        "what": "M.Sc. in Computer Engineering",
+        "where": "Politecnico di Torino, Turin, Italy",
+        "notes": [
+          "Specialization in Human–Computer Interaction."
+        ]
+      },
+      {
+        "period": "Sep 2022 – Jun 2026",
+        "what": "B.Sc. in Computer Engineering",
+        "where": "Bilkent University, Ankara, Türkiye",
+        "notes": [
+          "CGPA 3.36 / 4.00",
+          "Six Honour and High Honour titles",
+          "Coursework: Data Structures and Algorithms, Database Systems, Operating Systems, Object-Oriented Software Engineering"
+        ]
+      },
+      {
+        "period": "Feb 2025 – Jul 2025",
+        "what": "Erasmus+ Exchange Semester",
+        "where": "Università degli Studi dell'Aquila, L'Aquila, Italy",
+        "notes": [
+          "Deep Neural Networks, Cloud Architecture, Bioinformatics, Information Systems & Security, Signal Processing"
+        ]
+      }
+    ],
+    "research": [
+      {
+        "period": "Jan 2026 – May 2026",
+        "what": "Automated Program Repair",
+        "where": "Bilkent University — Undergraduate Researcher",
+        "notes": [
+          "Multidimensional characterisation study of software defect benchmarks, analysing evaluation bias in automated program repair."
+        ]
+      },
+      {
+        "period": "Sep 2025 – present",
+        "what": "LLM-Driven Build and Test Environments",
+        "where": "Bilkent University — Undergraduate Researcher",
+        "notes": [
+          "Applying LLMs and LLM agents to automate build processes and environment setup for open-source software."
+        ]
+      }
+    ],
+    "experience": [
+      {
+        "period": "Oct 2025 – Jun 2026",
+        "what": "Candidate Software Engineer",
+        "where": "Meteksan Savunma, Ankara",
+        "notes": [
+          "Internal testing software tools in C# and .NET."
+        ]
+      },
+      {
+        "period": "Aug 2025 – Sep 2025",
+        "what": "Machine Learning Intern",
+        "where": "Meteksan Savunma, Ankara",
+        "notes": [
+          "Predictive modelling and data analysis to optimise hardware test design workflows, reducing testing overhead."
+        ]
+      },
+      {
+        "period": "Jun 2025 – Jul 2025",
+        "what": "Software Engineer Intern, Bioinformatics",
+        "where": "Università degli Studi dell'Aquila, L'Aquila",
+        "notes": [
+          "Built MiRNASearch, a full-stack application analysing microRNA–gene–pathway relationships with Spring Boot and a Neo4j graph database.",
+          "Integrated five miRNA–gene prediction databases (miRBase, TarBase, RNA22, PicTar, TargetScan) into a unified graph of 4M+ nodes."
+        ]
+      },
+      {
+        "period": "Aug 2024",
+        "what": "Security Management Intern",
+        "where": "İşnet, Ankara",
+        "notes": [
+          "Security Operations Centre analysis and social engineering threat practices."
+        ]
+      },
+      {
+        "period": "Jul 2024",
+        "what": "Software Engineer Intern",
+        "where": "MobileAction, Ankara",
+        "notes": [
+          "Full-stack air pollution analysis application with Spring Boot, H2 and the OpenWeatherMap API."
+        ]
+      }
+    ],
+    "selectedProjects": [
+      {
+        "period": "Sep 2025 – present",
+        "what": "Autonomous Containerization of Open-Source Software",
+        "where": "Senior design project — Docker, OpenAI, LangChain",
+        "notes": [
+          "ReAct-based agent for autonomous Docker environment construction and build automation.",
+          "Validated on 282 repositories across 46 build systems and 11 application domains: 69.5% smoke-test success at an average cost of $0.087 per repository.",
+          "Senior Design Project Productivity Award, Bilkent CS Fair 2026."
+        ]
+      },
+      {
+        "period": "May 2025 – Jul 2025",
+        "what": "MiRNASearch",
+        "where": "Spring Boot, Neo4j, Vue.js",
+        "notes": [
+          "Built a full-stack bioinformatics tool aggregating miRNA–gene prediction data to visualize microRNA–gene–pathway relationships via a Neo4j graph database and Vue.js front-end."
+        ]
+      },
+      {
+        "period": "Feb 2025 – Jul 2025",
+        "what": "CNN Initialization and Training Performance Study",
+        "where": "PyTorch, Python",
+        "notes": [
+          "Effect of weight initialisation schemes on CNN performance on Fashion-MNIST; best configuration reached 90.37% test accuracy."
+        ]
+      },
+      {
+        "period": "Sep 2024 – Dec 2024",
+        "what": "Bilkent Information Office Web Application",
+        "where": "Spring Boot, PostgreSQL, Vue.js",
+        "notes": [
+          "Tour and fair management for prospective students."
+        ]
+      }
+    ],
+    "leadership": [
+      {
+        "period": "2022 – present",
+        "what": "Bilkent Young Entrepreneurs Society (BilkentYES)",
+        "where": "President of the Supervisory Board; Chairwoman of the Board; Sponsorship Coordinator",
+        "notes": [
+          "Led one of Bilkent’s largest student societies, ~1,500 members, managing sponsorships and partnerships for national-scale events.",
+          "Organised the Ankara Start-up Summit — ~800 participants, 20 sponsors, and venture capital organisations each year.",
+          "Developed and maintained the Ankara Start-up Summit website, streamlining the competition application process and advertisements for the event."
+        ]
+      }
+    ],
+    "tests": [
+      {
+        "label": "GRE General",
+        "value": "328 / 340 — Quantitative 170 / 170",
+        "year": "Sep 2025"
+      },
+      {
+        "label": "IELTS Academic",
+        "value": "Band 8.0 / 9.0 — CEFR C1",
+        "year": "Sep 2025"
+      }
+    ],
+    "certifications": [
+      {
+        "label": "AWS Academy Graduate — Cloud Foundations",
+        "value": "Amazon Web Services",
+        "year": "Jun 2025"
+      },
+      {
+        "label": "Complete Machine Learning Course with Python",
+        "value": "Udemy",
+        "year": "Feb 2025"
+      },
+      {
+        "label": "Microservices Foundations Professional Certificate",
+        "value": "Kong Inc.",
+        "year": "Aug 2024"
+      },
+      {
+        "label": "Apple Search Ads Certificate",
+        "value": "Apple",
+        "year": "Jul 2024"
+      }
+    ],
+    "skills": [
+      {
+        "group": "Languages",
+        "items": "Java, C, C++, C#, Python, JavaScript, HTML/CSS, SQL"
+      },
+      {
+        "group": "Frameworks",
+        "items": "Spring Boot, .NET, Blazor, Vue.js"
+      },
+      {
+        "group": "Data & AI",
+        "items": "PyTorch, Pandas, NumPy, LangChain, LLM agents, OpenAI API, CLIP, OpenCV"
+      },
+      {
+        "group": "Databases",
+        "items": "PostgreSQL, Neo4j, MySQL, H2"
+      },
+      {
+        "group": "Cloud & DevOps",
+        "items": "AWS, Azure, Docker, Git, Linux"
+      }
+    ],
+    "languages": [
+      {
+        "group": "Turkish",
+        "items": "Native"
+      },
+      {
+        "group": "English",
+        "items": "C1"
+      },
+      {
+        "group": "French",
+        "items": "B1"
+      },
+      {
+        "group": "Italian",
+        "items": "B1"
+      }
+    ]
+  }
+}
