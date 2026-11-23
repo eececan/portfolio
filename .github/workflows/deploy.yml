@@ -20,10 +20,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
-      - name: Install PDF generation dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y texlive-xetex texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended fonts-lmodern
       - name: Install, build, and upload site
         uses: withastro/action@v6
         with:
