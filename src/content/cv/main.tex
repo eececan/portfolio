@@ -7,6 +7,7 @@
 \usepackage[usenames,dvipsnames]{color}
 \usepackage{verbatim}
 \usepackage{enumitem}
+\usepackage{needspace}
 \usepackage[hidelinks]{hyperref}
 \usepackage{fancyhdr}
 \usepackage[english]{babel}
@@ -58,6 +59,11 @@
 }{}{0em}{}[\color{light-grey} {\titlerule[2pt]} \vspace{-4pt}]
 
 %-------------------------
+% Tunable spacing
+\newlength{\entryskip}\setlength{\entryskip}{3pt}
+\newlength{\roleskip}\setlength{\roleskip}{3pt}
+\setlist[itemize]{topsep=3pt, partopsep=0pt, itemsep=2pt, parsep=0pt}
+
 % Custom commands
 \newcommand{\resumeItem}[1]{
   \item\small{
@@ -66,18 +72,25 @@
 }
 
 \newcommand{\resumeSubheading}[4]{
-  \vspace{-1pt}\item
+  \vspace{\entryskip}\item
     \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
       \textbf{#1} & {\color{dark-grey}\small #2}\vspace{1pt}\\
       \textit{#3} & {\color{dark-grey} \small #4}\\
     \end{tabular*}\vspace{-4pt}
 }
 
+
+\newcommand{\resumeRole}[2]{
+    \vspace{\roleskip}\item
+    \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textit{#1} & {\color{dark-grey}\small #2} \\
+    \end{tabular*}\vspace{-4pt}
+}
 \newcommand{\resumeSubSubheading}[2]{
-    \item
-    \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
-      \textit{\small#1} & \textit{\small #2} \\
-    \end{tabular*}\vspace{-7pt}
+    \vspace{2pt}\item
+    \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textit{#1} & {\color{dark-grey}\small #2} \\
+    \end{tabular*}\vspace{-4pt}
 }
 
 \newcommand{\resumeProjectHeading}[2]{
@@ -98,50 +111,60 @@
 
 \color{text-grey}
 
+% Never leave a section heading stranded at the foot of a page.
+\newcommand{\cvsection}[1]{\needspace{5\baselineskip}\section{#1}}
+
 %-------------------------------------------
 \begin{document}
 
 %----------HEADING----------
 \begin{center}
     \textbf{\LARGE Elif Ece Can} \\ \vspace{5pt}  
-    \small \faEnvelope \hspace{2pt} \texttt{elfececan@gmail.com} \hspace{1pt} $|$
+    \hspace{1pt} \faEnvelope \hspace{2pt} \texttt{elfececan@gmail.com} \hspace{1pt} $|$
+    \hspace{1pt} \faGithub \hspace{2pt} \texttt{github.com/eececan} \hspace{1pt} $|$
     \hspace{1pt} \faLinkedin \hspace{2pt} \texttt{linkedin.com/in/elif-ece-can} \hspace{1pt}
 \end{center}
 
 %-----------EXPERIENCE-----------
-\section{EXPERIENCE}
+\cvsection{EXPERIENCE}
   \resumeSubHeadingListStart
 
     \resumeSubheading
-      {Meteksan Savunma}{Oct. 2025 -- Jun. 2026}
+      {H\textsubscript{2}politO --- Politecnico di Torino}{Nov. 2026 -- Present}
+      {Electronics \& Informatics Division Trainee}{Turin, Italy}
+      \resumeItemListStart
+        \resumeItem{Building an automotive-grade human--machine interface (HMI) in Android Studio for real-time vehicle telemetry}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Meteksan Savunma}{Aug. 2025 -- Jun. 2026}
       {Candidate Software Engineer}{Ankara, Türkiye}
       \resumeItemListStart
         \resumeItem{Developed and maintained internal testing software tools using C\# and .NET framework}
       \resumeItemListEnd
 
-    \resumeSubheading
-      {Meteksan Savunma}{Aug. 2025 -- Sept. 2025}
-      {Machine Learning Intern}{Ankara, Türkiye}
+      \resumeRole{Machine Learning Intern}{Aug. 2025 -- Sept. 2025}
       \resumeItemListStart
-        \resumeItem{Applied predictive modeling and data analysis to optimize hardware test design workflows, reducing overhead in testing processes}
+        \resumeItem{Applied predictive modeling and data analysis with PyTorch and scikit-learn to optimize hardware test design workflows, reducing testing overhead}
       \resumeItemListEnd
 
     \resumeSubheading
-      {Università Degli Studi Dell'Aquila}{Jun. 2025 -- Jul. 2025}
+      {Università degli Studi dell'Aquila}{Jun. 2025 -- Jul. 2025}
       {Software Engineer Intern in Bioinformatics}{L'Aquila, Italy}
       \resumeItemListStart
-        \resumeItem{Developed MiRNASearch, a full-stack web application for analyzing relationships between microRNAs, genes, and biological pathways using Spring Boot and Neo4j graph database}
+        \resumeItem{Built MiRNASearch, a full-stack app for microRNA--gene--pathway analysis using Spring Boot, Vue.js and Neo4j}
+        \resumeItem{Merged miRBase, TarBase, RNA22, PicTar and TargetScan predictions into a 4M+ node Neo4j graph}
       \resumeItemListEnd
 
     \resumeSubheading
-      {{\. I}\c{s}net}{Aug. 2024 -- Aug. 2024}
+      {{\. I}\c{s}net}{Aug. 2024}
       {Security Management Intern}{Ankara, Türkiye}
       \resumeItemListStart
-        \resumeItem{Gained hands-on experience in Security Operations Center (SOC) analysis and social engineering threat practices}
+        \resumeItem{Hands-on security operations centre (SOC) analysis with Wazuh on Linux and social engineering threat practice}
       \resumeItemListEnd
 
     \resumeSubheading
-      {MobileAction}{Jul. 2024 -- Jul. 2024}
+      {MobileAction}{Jul. 2024}
       {Software Engineer Intern}{Ankara, Türkiye}
        \resumeItemListStart
         \resumeItem{Built a full-stack air pollution analysis web application using Spring Boot, H2 Database and OpenWeatherMap API}
@@ -151,11 +174,11 @@
 
 
 %-----------EDUCATION-----------
-\section{EDUCATION}
+\cvsection{EDUCATION}
   \resumeSubHeadingListStart
       \resumeSubheading
-          {Politecnico di Torino}{Sep. 2026-}
-          {M.Sc. in Computer Engineering \textnormal{--- Specialization in Human-Computer Interaction}}{Turin, Italy}
+          {Politecnico di Torino}{Sep. 2026 -- Present}
+          {M.Sc. in Computer Engineering \textnormal{--- Specialization in Human--Computer Interaction}}{Turin, Italy}
     \resumeSubheading
       {Bilkent University}{Sep. 2022 -- Jun. 2026}
       {B.Sc. in Computer Engineering \textnormal{--- CGPA: \textbf{3.36 / 4.00}}}{Ankara, Türkiye}
@@ -165,7 +188,7 @@
       \resumeItemListEnd
 
     \resumeSubheading
-      {Università Degli Studi Dell'Aquila --- Erasmus Program}{Feb. 2025 -- Jul. 2025}
+      {Università degli Studi dell'Aquila --- Erasmus Program}{Feb. 2025 -- Jul. 2025}
       {Exchange Semester}{L'Aquila, Italy}
       \resumeItemListStart
         \resumeItem{\textbf{Courses}: Deep Neural Networks, Cloud Architecture, Bioinformatics, Information Security, Signal Processing}
@@ -175,7 +198,7 @@
 
 
 %-----------RESEARCH-----------
-\section{RESEARCH}
+\cvsection{RESEARCH}
   \resumeSubHeadingListStart
 
     \resumeSubheading
@@ -184,26 +207,26 @@
 
       \resumeSubSubheading{Automated Program Repair (APR)}{Jan. 2026 -- May 2026}
       \resumeItemListStart
-        \resumeItem{Conducting a multidimensional characterization study of software defect benchmarks to analyze evaluation bias in automated program repair}
+        \resumeItem{Multidimensional study of software defect benchmarks and evaluation bias in automated program repair}
       \resumeItemListEnd
 
-      \resumeSubSubheading{LLM-Driven Build \& Test Environments}{Sep. 2025 -- Present}
+      \resumeSubSubheading{LLM-Driven Build \& Test Environments}{Sep. 2025 -- Jun. 2026}
       \resumeItemListStart
-      \resumeItem{Investigating the application of LLMs and LLM agents to automate build processes and  environment setup of open-source software}
+      \resumeItem{Applying LLMs and LLM agents to automate build processes and environment setup for open-source software}
       \resumeItemListEnd
 
   \resumeSubHeadingListEnd
 
 
 %-----------PROJECTS-----------
-\section{PROJECTS}
+\cvsection{PROJECTS}
     \resumeSubHeadingListStart
 
      \resumeProjectHeading
-              {\textbf{Autonomous Containerization of Open-Source Software} $|$ \emph{Docker, OpenAI, LangChain}}{Sep. 2025 -- Present}
+              {\textbf{Autonomous Containerization of Open-Source Software} $|$ \emph{Docker, OpenAI, LangChain}}{Sep. 2025 -- Jun. 2026}
               \resumeItemListStart
                 \resumeItem{Capstone project: Developed a ReAct-based agent for autonomous Docker environment construction and build automation, validated on 282 repositories across 46 build systems and 11 application domains with a 69.5\% smoke-test success rate at an average cost of \$0.087 per repository.}
-                \resumeItem{\textbf{Award:} Received the \textit{Senior Design Project Productivity Award} at Bilkent University CS Fair 2026, Department of Computer Engineering.}
+                \resumeItem{\textbf{Award:} \textit{Senior Design Project Productivity Award}, Bilkent University CS Fair 2026}
             \resumeItemListEnd
           
       \resumeProjectHeading
@@ -227,7 +250,7 @@
      \resumeSubHeadingListEnd
 
 %-----------CERTIFICATIONS-----------
-\section{CERTIFICATIONS}
+\cvsection{CERTIFICATIONS}
  \begin{itemize}[leftmargin=0in, label={}]
     \small{\item{
      \textbf{IELTS Academic} {: Band 8.0 / 9.0 --- CEFR C1 (Sep. 2025)}\vspace{2pt} \\
@@ -240,12 +263,12 @@
  \end{itemize}
 
 %-----------SKILLS-----------
-\section{SKILLS}
+\cvsection{SKILLS}
  \begin{itemize}[leftmargin=0in, label={}]
     \small{\item{
      \textbf{Languages} {: Java, C, C++, C\#, Python, JavaScript, HTML/CSS, SQL}\vspace{2pt} \\
-     \textbf{Frameworks} {: Spring Boot, .NET, Blazor, Vue.js}\vspace{2pt} \\
-     \textbf{Data/AI} {: Pandas, NumPy, PyTorch, LangChain, LLM Agents, OpenAI API}\vspace{2pt} \\
+     \textbf{Frameworks} {: Spring Boot, .NET, Blazor, Vue.js, Android Studio}\vspace{2pt} \\
+     \textbf{Data/AI} {: PyTorch, scikit-learn, Pandas, NumPy, LangChain, LLM Agents, OpenAI API}\vspace{2pt} \\
      \textbf{Databases} {: PostgreSQL, Neo4j, MySQL, H2}\vspace{2pt} \\
      \textbf{Cloud \& DevOps} {: AWS, Azure, Docker, Git, Linux}
     }}
@@ -253,11 +276,11 @@
 
  
 %-----------LEADERSHIP-----------
-\section{LEADERSHIP}
+\cvsection{LEADERSHIP}
   \resumeSubHeadingListStart
 
     \resumeSubheading
-      {Bilkent Young Entrepreneurs Society (\href{https://www.bilkentyes.com/}{\myuline{BilkentYES}})}{2022 -- Present}
+      {Bilkent Young Entrepreneurs Society (\href{https://www.bilkentyes.com/}{\myuline{BilkentYES}})}{Sep. 2022 -- Jun. 2026}
       {President of the Supervisory Board; Chairwoman of the Board; Sponsorship Coordinator}{}
       \resumeItemListStart
         \resumeItem{Led one of Bilkent University's largest student societies with $\sim$1500 members, managing sponsorships and partnerships for national-scale events}
@@ -268,7 +291,7 @@
   \resumeSubHeadingListEnd
   
 %-----------LANGUAGES-----------
-\section{LANGUAGES}
+\cvsection{LANGUAGES}
  \begin{itemize}[leftmargin=0in, label={}]
     \small{\item{
      \textbf{Turkish} {: Native} $|$ \textbf{English} {: C1} $|$ \textbf{French} {: B1} $|$ \textbf{Italian} {: B1}

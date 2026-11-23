@@ -1,42 +1,37 @@
 ---
 import Base from '../layouts/Base.astro';
-import PageHeader from '../components/PageHeader.astro';
-import CvSection from '../components/CvSection.astro';
-import CvTable from '../components/CvTable.astro';
-import { INTRO, SITE } from '../consts';
-import {
-	CERTIFICATIONS,
-	EDUCATION,
-	EXPERIENCE,
-	LANGUAGES,
-	LEADERSHIP,
-	RESEARCH,
-	SELECTED_PROJECTS,
-	SKILLS,
-	TESTS,
-} from '../data/cv';
+import cvPdf from '../content/cv/ElifEceCanCV.pdf?url';
 ---
 
 <Base title="CV" description="Curriculum vitae of Elif Ece Can — computer engineering, Politecnico di Torino.">
-	<PageHeader
-		title="Curriculum Vitae"
-		intro={INTRO.cv}
-	/>
-
-	<p class="-mt-8 mb-14 flex flex-wrap gap-x-5 gap-y-2 text-[0.875rem]">
-		<a href="/cv.pdf" class="text-ink underline decoration-accent underline-offset-4">Download PDF</a>
-		<a href={`mailto:${SITE.email}`} class="text-ink underline decoration-accent underline-offset-4">
-			{SITE.email}
+	<div class="mb-6 flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+		<div>
+			<h1 class="font-serif text-[2rem] font-semibold leading-tight tracking-tight">Curriculum Vitae</h1>
+			<p class="mt-2 max-w-[58ch] text-[0.9rem] leading-relaxed text-muted">
+				The PDF is the CV. If your browser cannot display it below, open it in a new tab.
+			</p>
+		</div>
+		<a
+			href={cvPdf}
+			target="_blank"
+			rel="noopener"
+			title="Open the CV as a PDF in a new tab"
+			class="shrink-0 text-[0.875rem] text-ink underline decoration-accent underline-offset-4"
+		>
+			Open CV PDF &nearr;
 		</a>
-	</p>
+	</div>
 
-	<CvSection title="Education" entries={EDUCATION} />
-	<CvSection title="Research" entries={RESEARCH} />
-	<CvSection title="Experience" entries={EXPERIENCE} />
-	<CvSection title="Selected projects" entries={SELECTED_PROJECTS} />
-	<CvSection title="Leadership" entries={LEADERSHIP} />
-	<CvTable title="Tests" rows={TESTS} />
-	<CvTable title="Certifications" rows={CERTIFICATIONS} />
-	<CvTable title="Skills" rows={SKILLS} />
-	<CvTable title="Languages" rows={LANGUAGES} />
+	<div class="overflow-hidden rounded border border-rule bg-surface">
+		<iframe
+			src={cvPdf}
+			title="Curriculum Vitae — Elif Ece Can"
+			class="block h-[calc(100vh-11rem)] min-h-[40rem] w-full"
+		>
+			<p>
+				Your browser cannot display PDFs inline.
+				<a href={cvPdf} target="_blank" rel="noopener">Open the CV PDF</a>.
+			</p>
+		</iframe>
+	</div>
 </Base>

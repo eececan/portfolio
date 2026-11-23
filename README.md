@@ -1,19 +1,19 @@
 # Elif Ece Can
 
-Personal portfolio and academic profile for [Elif Ece Can](https://eececan.com), featuring research, projects, and a downloadable CV.
+Personal portfolio and academic profile for [Elif Ece Can](https://eececan.com), featuring research and projects.
 
-Built with Astro, the site is statically generated and deployed with GitHub Pages. Profile information is maintained in one place and used to generate both the web CV and its PDF version. Project and writing pages use Markdown and MDX.
+Built with Astro, the site is statically generated and deployed with GitHub Pages. Site metadata and introductory text live in `profile.json`; project pages use Markdown and MDX. The CV is the PDF at `src/content/cv/ElifEceCanCV.pdf`, compiled from `src/content/cv/main.tex`.
 
 ## Features
 
 - Research and project pages with responsive layouts
-- A web CV and a downloadable PDF generated from shared profile data
+- The CV as a single PDF, viewable in the browser or opened in a new tab
 - Light and dark themes based on the visitor’s system preference
-- RSS, sitemap, and search and social metadata
+- Sitemap and search and social metadata
 
 ## Getting started
 
-Requirements: Node.js 22.23.4 or later. A TeX distribution with XeLaTeX is also required for production builds and PDF generation.
+Requirement: Node.js 22.23.4 or later. A TeX distribution is only needed when regenerating the CV PDF; the site build does not require it.
 
 ```sh
 npm ci
@@ -27,23 +27,37 @@ npm run build
 npm run preview
 ```
 
-The build regenerates `public/cv.pdf` and its LaTeX source in `generated/cv.tex`, then writes the static site to `dist/`. The TeX installation must include Latin Modern fonts and the `geometry`, `tabularx`, `enumitem`, `needspace`, `xcolor`, and `hyperref` packages. The [deployment workflow](.github/workflows/deploy.yml) lists the packages used on Ubuntu.
+The build writes the static site to `dist/`.
 
 ## Project structure
 
 | Path | Purpose |
 | --- | --- |
-| `profile.json` | Profile, contact links, introductory text, and CV entries |
+| `profile.json` | Site metadata, contact links, and introductory text |
 | `src/content/projects/` | Project pages and their metadata |
-| `src/content/writing/` | Optional writing entries |
+| `src/content/cv/main.tex` | LaTeX source for the CV |
+| `src/content/cv/ElifEceCanCV.pdf` | The CV PDF served by the site |
 | `src/pages/` | Site routes |
 | `src/components/` and `src/layouts/` | Reusable components and page layouts |
 | `src/styles/` | Site styles |
-| `scripts/generate-cv.mjs` | CV source and PDF generator |
-| `public/` | Static files, including the generated CV |
+| `public/` | Static files such as the favicon and CNAME |
 
-Edit `profile.json` to update the web and PDF CVs, then run `npm run build` and review the output. The earlier LaTeX CV at `src/content/cv/main.tex` is retained for reference; it is not the source used by the generator.
+## CV
+
+The CV page displays the PDF directly; there is no second copy in `public/`.
+Rebuild the PDF after editing `main.tex` with Tectonic, or any TeX Live with
+`fontawesome5`, `tgheros`, `FiraMono`, and `contour`:
+
+```sh
+tectonic -X compile src/content/cv/main.tex --outdir /tmp
+cp /tmp/main.pdf src/content/cv/ElifEceCanCV.pdf
+```
+
+The CV is tuned to exactly two pages. `\cvsection` guards section headings from
+being stranded at a page break, and `\entryskip` / `\roleskip` / the `enumitem`
+settings in the preamble are the knobs for reclaiming a line if new content
+overflows.
 
 ## Deployment
 
-Pushes to `main` trigger the [GitHub Actions workflow](.github/workflows/deploy.yml), which builds the site and publishes it to GitHub Pages. The site URL in `profile.json` is used for canonical URLs, RSS, the sitemap, and `robots.txt`.
+Pushes to `main` trigger the [GitHub Actions workflow](.github/workflows/deploy.yml), which builds the site and publishes it to GitHub Pages. The site URL in `profile.json` is used for canonical URLs and the sitemap.

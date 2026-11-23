@@ -76,16 +76,15 @@ h1, h2, h3, h4 {
 
 .prose > * + * { margin-top: 1.25em; }
 
-/* Wide media, narrow text: prose fills the column, but running text stays
-   at a readable measure so figures and code can use the full width. */
+/* Wide media, narrower text: prose fills the column, but running text stays
+   at a readable measure so figures and code can use the full width. Section
+   rules deliberately span the whole column so they line up with the header. */
 .prose > p,
 .prose > ul,
 .prose > ol,
-.prose > h2,
-.prose > h3,
 .prose > blockquote,
 .prose > hr {
-	max-width: 68ch;
+	max-width: 80ch;
 }
 
 

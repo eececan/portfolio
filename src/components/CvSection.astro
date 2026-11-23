@@ -1,9 +1,16 @@
 ---
+interface Role {
+	what: string;
+	period: string;
+	notes?: string[];
+}
 interface Entry {
 	period: string;
 	what: string;
 	where: string;
 	notes?: string[];
+	/** Two or more roles at the same employer, newest first. */
+	roles?: Role[];
 }
 interface Props {
 	title: string;
@@ -22,14 +29,37 @@ const { title, entries } = Astro.props;
 					<div>
 						<h3 class="font-serif text-[1.02rem] font-semibold leading-snug">{e.what}</h3>
 						<p class="mt-0.5 text-[0.85rem] text-muted">{e.where}</p>
-						{e.notes && e.notes.length > 0 && (
-							<ul class="mt-2 space-y-1.5">
-								{e.notes.map((n) => (
-									<li class="relative pl-4 text-[0.875rem] leading-relaxed text-muted before:absolute before:left-0 before:text-faint before:content-['—']">
-										{n}
+						{e.roles ? (
+							<ul class="mt-3 space-y-3">
+								{e.roles.map((r) => (
+									<li>
+										<p class="text-[0.9rem] leading-snug">
+											{r.what}
+											<span class="ml-2 text-[0.78rem] tabular-nums text-faint">{r.period}</span>
+										</p>
+										{r.notes && r.notes.length > 0 && (
+											<ul class="mt-1.5 space-y-1.5">
+												{r.notes.map((n) => (
+													<li class="relative pl-4 text-[0.875rem] leading-relaxed text-muted before:absolute before:left-0 before:text-faint before:content-['—']">
+														{n}
+													</li>
+												))}
+											</ul>
+										)}
 									</li>
 								))}
 							</ul>
+						) : (
+							e.notes &&
+							e.notes.length > 0 && (
+								<ul class="mt-2 space-y-1.5">
+									{e.notes.map((n) => (
+										<li class="relative pl-4 text-[0.875rem] leading-relaxed text-muted before:absolute before:left-0 before:text-faint before:content-['—']">
+											{n}
+										</li>
+									))}
+								</ul>
+							)
 						)}
 					</div>
 				</li>

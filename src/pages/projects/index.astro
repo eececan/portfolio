@@ -7,16 +7,14 @@ import ProjectCard from '../../components/ProjectCard.astro';
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
 	(a, b) => a.data.order - b.data.order
 );
-const allWriting = await getCollection('writing', ({ data }) => !data.draft);
-const writingCount = (id: string) => allWriting.filter((w) => w.data.project?.id === id).length;
 ---
 
 <Base title="Projects" description="Research projects in computer vision and computational analysis of architecture.">
 	<PageHeader
 		title="Projects"
-		intro="Each project collects its own write-ups, papers, and code."
+		intro="Each project gets a long-form write-up: the question, the data, what worked and what didn't."
 	/>
 	<div class="grid gap-x-12 gap-y-14 lg:grid-cols-2">
-		{projects.map((p) => <ProjectCard project={p} writingCount={writingCount(p.id)} />)}
+		{projects.map((p) => <ProjectCard project={p} />)}
 	</div>
 </Base>

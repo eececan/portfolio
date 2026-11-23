@@ -2,16 +2,13 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import WritingItem from '../components/WritingItem.astro';
+import cvPdf from '../content/cv/ElifEceCanCV.pdf?url';
 import { INTRO, LINKS, SITE } from '../consts';
 import { RESEARCH } from '../data/cv';
 
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
 	(a, b) => a.data.order - b.data.order
 );
-
-const allWriting = await getCollection('writing', ({ data }) => !data.draft);
-const writingCount = (id: string) => allWriting.filter((w) => w.data.project?.id === id).length;
 
 const siteUrl = new URL('/', Astro.site ?? SITE.url).href;
 const personId = `${siteUrl}#person`;
@@ -44,10 +41,6 @@ const structuredData = {
 		},
 	],
 };
-
-const writing = [...allWriting]
-	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-	.slice(0, 3);
 ---
 
 <Base fullTitle={`${SITE.name} — Computer Engineering & Human–Computer Interaction`} {structuredData}>
@@ -77,7 +70,15 @@ const writing = [...allWriting]
 					<dt class="text-faint">CV</dt>
 					<dd class="mt-0.5 flex gap-x-3">
 						<a href="/cv/" class="text-ink underline decoration-accent underline-offset-4">Web</a>
-						<a href="/cv.pdf" class="text-ink underline decoration-accent underline-offset-4">PDF</a>
+						<a
+							href={cvPdf}
+							target="_blank"
+							rel="noopener"
+							title="Open the CV as a PDF in a new tab"
+							class="text-ink underline decoration-accent underline-offset-4"
+						>
+							PDF
+						</a>
 					</dd>
 				</div>
 				<div>
@@ -117,24 +118,7 @@ const writing = [...allWriting]
 			<a href="/projects/" class="text-[0.82rem] text-muted no-underline hover:text-ink">All projects &rarr;</a>
 		</div>
 		<div class="grid gap-x-12 gap-y-14 lg:grid-cols-2">
-			{projects.map((p) => <ProjectCard project={p} writingCount={writingCount(p.id)} />)}
+			{projects.map((p) => <ProjectCard project={p} />)}
 		</div>
 	</section>
-
-	<!-- Writing -->
-	{
-		writing.length > 0 && (
-			<section class="mt-24">
-				<div class="mb-4 flex items-baseline justify-between gap-4">
-					<h2 class="text-[0.8rem] font-medium uppercase tracking-[0.12em] text-faint">Writing</h2>
-					<a href="/writing/" class="text-[0.82rem] text-muted no-underline hover:text-ink">
-						All writing &rarr;
-					</a>
-				</div>
-				{writing.map((w) => (
-					<WritingItem entry={w} />
-				))}
-			</section>
-		)
-	}
 </Base>

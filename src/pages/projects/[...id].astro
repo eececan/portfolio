@@ -2,7 +2,6 @@
 import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
-import WritingItem from '../../components/WritingItem.astro';
 import Toc from '../../components/Toc.astro';
 
 export const getStaticPaths = (async () => {
@@ -13,16 +12,11 @@ export const getStaticPaths = (async () => {
 const { project } = Astro.props;
 const { title, tagline, summary, year, status, tags, repo, demo } = project.data;
 const { Content, headings } = await render(project);
-
-// Writings that declare `project: <this project>` in their frontmatter.
-const related = (await getCollection('writing', ({ data }) => !data.draft))
-	.filter((w) => w.data.project?.id === project.id)
-	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <Base title={title} description={summary} ogType="article">
 	<div class="xl:grid xl:grid-cols-[minmax(0,1fr)_11rem] xl:gap-x-14">
-		<article class="min-w-0">
+		<article class="mx-auto w-full min-w-0 max-w-[44rem] xl:mx-0 xl:max-w-none">
 			<header class="border-b border-rule pb-8">
 				<p class="mb-3 text-[0.78rem] tabular-nums text-faint">
 					{year}
@@ -64,19 +58,6 @@ const related = (await getCollection('writing', ({ data }) => !data.draft))
 			<div class="prose mt-12">
 				<Content />
 			</div>
-
-			{
-				related.length > 0 && (
-					<section class="mt-20 border-t border-rule pt-10">
-						<h2 class="mb-6 text-[0.8rem] font-medium uppercase tracking-[0.12em] text-faint">
-							Writing from this project
-						</h2>
-						{related.map((w) => (
-							<WritingItem entry={w} compact />
-						))}
-					</section>
-				)
-			}
 
 			<p class="mt-16 text-[0.85rem]">
 				<a href="/projects/" class="text-muted no-underline hover:text-ink">&larr; All projects</a>

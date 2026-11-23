@@ -41,11 +41,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<meta name="twitter:card" content="summary" />
 
 		{jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
-
-		<link rel="alternate" type="application/rss+xml" title={SITE.name} href={new URL('rss.xml', Astro.site)} />
 	</head>
 	<body class="bg-page font-sans text-ink antialiased">
-		<div class="mx-auto max-w-[86rem] px-6 lg:px-10 xl:px-14 2xl:max-w-[104rem]">
+		<div class="mx-auto max-w-[80rem] px-6 lg:px-10 xl:px-14">
 			<div class="md:grid md:grid-cols-[10.5rem_minmax(0,1fr)] md:gap-x-12 lg:grid-cols-[11.5rem_minmax(0,1fr)] lg:gap-x-16">
 				<Sidebar />
 				<div class="min-w-0 py-12 md:py-20">
